@@ -1,5 +1,8 @@
 @import 'tailwindcss';
 
+/* Short wall tablets (e.g. 960x600): tighten spacing so the grid never scrolls */
+@custom-variant short (@media (max-height: 680px) and (min-width: 56rem));
+
 @theme {
   /* base surfaces */
   --color-base-950: #070c16;
@@ -51,6 +54,7 @@
   --color-steel: #2f6fa8;
   --color-sky: #8fd3ee;
   --color-cold: #4a90d9;
+  --breakpoint-lg: 56rem;
   --font-ui: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 

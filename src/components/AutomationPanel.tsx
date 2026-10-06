@@ -40,7 +40,7 @@ export function AutomationPanel() {
               aria-label={a.label}
               aria-pressed={a.active}
               onClick={() => runScene(a.id)}
-              className={`press grid h-10 place-items-center rounded-xl ${
+              className={`press grid h-10 short:h-9 place-items-center rounded-xl ${
                 a.active ? 'bg-teal text-fg' : 'bg-tile text-fg hover:bg-tile-hi'
               }`}
             >
