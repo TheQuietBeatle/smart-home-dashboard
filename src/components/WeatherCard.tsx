@@ -2,8 +2,8 @@ import { Droplets, House, Moon, Sun, Thermometer } from 'lucide-react'
 import { useSmartHome } from '../hooks/smartHomeContext'
 import { useClock } from '../hooks/useClock'
 import { num } from '../lib/format'
-import { Chip, Section } from './ui'
-import { shows, type WidgetSize } from '../widgets/types'
+import { Section } from './ui'
+import { shows, TOUCH, type WidgetSize } from '../widgets/types'
 
 export function WeatherCard({
   className = '',
@@ -12,10 +12,12 @@ export function WeatherCard({
   className?: string
   size?: WidgetSize
 }) {
-  const show = (tier: WidgetSize) => shows(size, tier, 'l')
   const { state } = useSmartHome()
   const clock = useClock()
   const { weather, sensors } = state
+  const show = (tier: WidgetSize) => shows(size, tier, 'l')
+  const narrow = size === 's' || size === 'l'
+  const side = size === 'w'
 
   const days = weather.forecast
   const weekMin = Math.min(...days.map((d) => d.min))
@@ -25,66 +27,88 @@ export function WeatherCard({
 
   return (
     <Section
-      className={className}
+      className={`${TOUCH.section} ${className}`}
       icon={<House size={16} />}
       title="Outdoor"
       thumb={0.62}
       chips={
         show('m') && (
-        <>
-          <Chip icon={<Thermometer size={12} />}>
-            {num(sensors.outdoorTemp)} °C
-          </Chip>
-          <Chip icon={<Droplets size={12} />}>{sensors.outdoorHumidity}%</Chip>
-        </>
+          <>
+            <span className={TOUCH.chip}>
+              {!narrow && <Thermometer size={14} />}
+              {num(sensors.outdoorTemp)}°C
+            </span>
+            <span className={TOUCH.chip}>
+              {!narrow && <Droplets size={14} />}
+              {sensors.outdoorHumidity}%
+            </span>
+          </>
         )
       }
     >
-      <div className="flex items-center justify-center gap-5 py-2 short:py-0">
-        {weather.isNight ? (
-          <Moon size={52} strokeWidth={1.4} className="text-sky" />
-        ) : (
-          <Sun size={52} strokeWidth={1.4} className="text-amber" />
-        )}
-        <div className="text-center leading-tight">
-          <div className="text-[11px] text-fg-dim">
-            {weather.condition}, {weather.temp}°C
+      <div
+        className={`flex min-h-0 flex-1 gap-3 ${side ? 'flex-row' : 'flex-col'}`}
+      >
+        <div
+          className={`flex shrink-0 flex-col items-center justify-center gap-2 ${
+            side ? 'w-[40%]' : ''
+          }`}
+        >
+          <div className="flex items-center gap-3">
+            {weather.isNight ? (
+              <Moon size={40} strokeWidth={1.4} className="text-sky" />
+            ) : (
+              <Sun size={40} strokeWidth={1.4} className="text-amber" />
+            )}
+            <div className="leading-none">
+              <div className="text-[32px] font-medium tabular-nums tracking-tight">
+                {weather.temp}°C
+              </div>
+              <div className="mt-1 text-[14px] text-fg-dim">
+                {weather.condition}
+              </div>
+            </div>
           </div>
-          <div className="text-[44px] short:text-[34px] font-medium tabular-nums leading-none tracking-tight">
-            {clock.time}
+          <div className="text-center leading-none">
+            <div className="text-[30px] font-medium tabular-nums tracking-tight">
+              {clock.time}
+            </div>
+            <div className="mt-1 text-[14px] text-fg-dim">{clock.date}</div>
           </div>
-          <div className="mt-1 text-[11px] text-fg-dim">{clock.date}</div>
         </div>
-      </div>
 
-      {show('w') && (
-      <ul className="flex flex-1 flex-col justify-between gap-1.5 short:gap-1" aria-label="Forecast">
-        {days.map((d, i) => (
-          <li key={d.day} className="flex items-center gap-2 text-[11px]">
-            <span className="w-7 text-fg-dim">{d.day}</span>
-            <span className="w-9 text-right text-fg-dim tabular-nums">
-              {d.min}°C
-            </span>
-            <span className="relative h-2.5 flex-1 rounded-full bg-tile">
-              <span
-                className="absolute inset-y-0 rounded-full bg-gradient-to-r from-cold to-teal"
-                style={{
-                  left: `${at(d.min)}%`,
-                  width: `${at(d.max) - at(d.min)}%`,
-                }}
-              />
-              {i === 0 && show('l') && (
-                <span
-                  className="absolute top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-bar bg-fg"
-                  style={{ left: `${at(weather.temp)}%` }}
-                />
-              )}
-            </span>
-            <span className="w-8 tabular-nums">{d.max}°C</span>
-          </li>
-        ))}
-      </ul>
-      )}
+        {show('w') && (
+          <ul
+            className="flex min-h-0 min-w-0 flex-1 flex-col justify-between gap-1"
+            aria-label="Forecast"
+          >
+            {days.map((d, i) => (
+              <li key={d.day} className="flex items-center gap-2 text-[14px] leading-none">
+                <span className="w-9 shrink-0 text-fg-dim">{d.day}</span>
+                <span className="w-11 shrink-0 text-right text-fg-dim tabular-nums">
+                  {d.min}°
+                </span>
+                <span className="relative h-2.5 min-w-0 flex-1 rounded-full bg-tile">
+                  <span
+                    className="absolute inset-y-0 rounded-full bg-gradient-to-r from-cold to-teal"
+                    style={{
+                      left: `${at(d.min)}%`,
+                      width: `${at(d.max) - at(d.min)}%`,
+                    }}
+                  />
+                  {i === 0 && show('l') && (
+                    <span
+                      className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-bar bg-fg"
+                      style={{ left: `${at(weather.temp)}%` }}
+                    />
+                  )}
+                </span>
+                <span className="w-9 shrink-0 tabular-nums">{d.max}°</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </Section>
   )
 }

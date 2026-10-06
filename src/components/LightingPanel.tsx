@@ -17,8 +17,8 @@ import {
 import { useSmartHome } from '../hooks/smartHomeContext'
 import { LIGHT_LABELS } from '../data/mockData'
 import type { DeviceId } from '../types'
-import { Chip, Pill, Section } from './ui'
-import { shows, type WidgetSize } from '../widgets/types'
+import { Pill, Section } from './ui'
+import { shows, TOUCH, type WidgetSize } from '../widgets/types'
 
 const BIG: DeviceId[] = ['light.table', 'light.sofa']
 const ROWS: [DeviceId, DeviceId][] = [
@@ -46,24 +46,31 @@ export function LightingPanel({
   className?: string
   size?: WidgetSize
 }) {
-  const show = (tier: WidgetSize) => shows(size, tier, 'l')
   const { state, toggleLight, setBlinds } = useSmartHome()
   const open = state.lights['cover.blinds']
+  const show = (tier: WidgetSize) => shows(size, tier, 'l')
+  // The 8 pills need four 48px rows: only the 2-row (l) cell has room.
+  // At m and w that tier is dropped rather than shrinking the targets.
+  const pills = show('m') && size === 'l'
 
   return (
     <Section
-      className={className}
+      className={`${TOUCH.section} ${className}`}
       icon={<Lamp size={16} />}
       title="Indoor Lights"
       thumb={0.55}
       chips={
         <>
-          <Chip tone="amber" icon={<Lightbulb size={12} />} />
-          <Chip icon={<Car size={12} />} />
+          <span className={`${TOUCH.chip} glass-amber text-bg`}>
+            <Lightbulb size={14} />
+          </span>
+          <span className={TOUCH.chip}>
+            <Car size={14} />
+          </span>
         </>
       }
     >
-      <div className="grid min-h-[84px] short:min-h-[52px] flex-1 grid-cols-2 gap-2">
+      <div className="grid min-h-12 flex-1 grid-cols-2 gap-1.5">
         {BIG.map((id) => {
           const on = state.lights[id]
           const Icon = id === 'light.sofa' ? Sofa : on ? Lamp : LightbulbOff
@@ -73,70 +80,69 @@ export function LightingPanel({
               type="button"
               aria-pressed={on}
               onClick={() => toggleLight(id)}
-              className={`press flex flex-col items-center justify-center gap-2 rounded-2xl text-[13px] font-medium ${
-                on ? 'glass glass-teal' : 'glass'
-              }`}
+              className={`press flex min-w-0 items-center justify-center gap-2 rounded-2xl px-2 text-center text-[14px] font-medium leading-tight ${
+                size === 'w' ? 'flex-row' : 'flex-col'
+              } ${on ? 'glass glass-teal' : 'glass'}`}
             >
-              <Icon size={22} strokeWidth={1.6} />
+              <Icon size={22} strokeWidth={1.6} className="shrink-0" />
               {LIGHT_LABELS[id]}
             </button>
           )
         })}
       </div>
 
-      {show('m') && (
-      <div className="grid grid-cols-2 gap-2 [&>button]:h-full [&>button]:min-h-9" style={{ flexGrow: 0.3 }}>
-        {ROWS.flat().map((id) => {
-          const Icon = ICONS[id] ?? Lightbulb
-          return (
-            <Pill
-              key={id}
-              active={state.lights[id]}
-              tone={id === 'light.lamp' ? 'amber' : 'teal'}
-              icon={<Icon size={13} />}
-              onClick={() => toggleLight(id)}
-            >
-              {LIGHT_LABELS[id]}
-            </Pill>
-          )
-        })}
-      </div>
+      {pills && (
+        <div className="grid grid-cols-2 gap-1.5">
+          {ROWS.flat().map((id) => {
+            const Icon = ICONS[id] ?? Lightbulb
+            return (
+              <Pill
+                key={id}
+                active={state.lights[id]}
+                tone={id === 'light.lamp' ? 'amber' : 'teal'}
+                icon={<Icon size={14} />}
+                onClick={() => toggleLight(id)}
+                className={`${TOUCH.pill} pr-2 max-[900px]:pl-3! max-[900px]:[&>span:first-child]:hidden`}
+              >
+                {LIGHT_LABELS[id]}
+              </Pill>
+            )
+          })}
+        </div>
       )}
 
       {show('w') && (
-      <div
-        className={`flex h-11 short:h-10 items-center gap-2 rounded-full px-2 ${
-          open ? 'glass glass-blue text-fg' : 'glass text-fg'
-        }`}
-      >
-        <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-black/20">
-          <Blinds size={15} />
-        </span>
-        <span className="min-w-0 flex-1 leading-tight">
-          <span className="block truncate text-[13px] font-medium">
-            {LIGHT_LABELS['cover.blinds']}
-          </span>
-          <span className="block truncate text-[10px] opacity-80">
-            {open ? 'Open' : 'Closed'}
-          </span>
-        </span>
-        <button
-          type="button"
-          aria-label="Open blinds"
-          onClick={() => setBlinds(true)}
-          className="press grid h-8 w-8 place-items-center rounded-full bg-black/25 hover:bg-black/35"
+        <div
+          className={`flex h-12 shrink-0 items-center gap-1 rounded-full pl-3 ${
+            open ? 'glass glass-blue text-fg' : 'glass text-fg'
+          }`}
         >
-          <ArrowUp size={15} />
-        </button>
-        <button
-          type="button"
-          aria-label="Close blinds"
-          onClick={() => setBlinds(false)}
-          className="press grid h-8 w-8 place-items-center rounded-full bg-black/25 hover:bg-black/35"
-        >
-          <ArrowDown size={15} />
-        </button>
-      </div>
+          <Blinds size={18} className="shrink-0" />
+          <span className="min-w-0 flex-1 pl-1 text-[14px] leading-tight">
+            <span className="block truncate font-medium">
+              {LIGHT_LABELS['cover.blinds']}
+            </span>
+            <span className="block truncate opacity-80">
+              {open ? 'Open' : 'Closed'}
+            </span>
+          </span>
+          <button
+            type="button"
+            aria-label="Open blinds"
+            onClick={() => setBlinds(true)}
+            className={`${TOUCH.icon} bg-black/20 hover:bg-black/35`}
+          >
+            <ArrowUp size={18} />
+          </button>
+          <button
+            type="button"
+            aria-label="Close blinds"
+            onClick={() => setBlinds(false)}
+            className={`${TOUCH.icon} bg-black/20 hover:bg-black/35`}
+          >
+            <ArrowDown size={18} />
+          </button>
+        </div>
       )}
     </Section>
   )

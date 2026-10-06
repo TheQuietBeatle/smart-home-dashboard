@@ -30,7 +30,7 @@ interface WidgetFrameProps {
 }
 
 const TOOL =
-  'press grid h-8 min-w-8 place-items-center rounded-full px-1.5 text-fg hover:bg-white/10 disabled:opacity-35 disabled:hover:bg-transparent'
+  'press grid h-12 w-12 shrink-0 place-items-center rounded-full text-fg hover:bg-white/10 disabled:opacity-35 disabled:hover:bg-transparent'
 
 export function WidgetFrame({
   id,
@@ -91,7 +91,7 @@ export function WidgetFrame({
         fixedHeight
           ? 'min-h-0 overflow-hidden'
           : placement
-            ? 'scroll-thin overflow-y-auto overflow-x-hidden'
+            ? 'overflow-hidden'
             : ''
       } ${
         arrangeOn
@@ -111,7 +111,7 @@ export function WidgetFrame({
           <div
             role="toolbar"
             aria-label={`Arrange ${WIDGET_LABEL[id]}`}
-            className="glass absolute right-1 top-1 z-20 flex items-center gap-0.5 rounded-full p-0.5"
+            className="glass absolute right-0 top-0 z-20 flex items-center rounded-full"
           >
             <button
               type="button"
@@ -122,7 +122,7 @@ export function WidgetFrame({
               onPointerUp={endDrag}
               onPointerCancel={endDrag}
             >
-              <GripVertical size={15} />
+              <GripVertical size={18} />
             </button>
             <button
               type="button"
@@ -131,13 +131,13 @@ export function WidgetFrame({
               onClick={() => onMove('left')}
               className={TOOL}
             >
-              <ChevronLeft size={15} />
+              <ChevronLeft size={18} />
             </button>
             <button
               type="button"
               aria-label={`${WIDGET_LABEL[id]} size: ${SIZE_LABEL[size]}. Change size`}
               onClick={onCycleSize}
-              className={`${TOOL} text-[12px] font-bold uppercase`}
+              className={`${TOOL} text-[15px] font-bold uppercase`}
             >
               {size}
             </button>
@@ -148,7 +148,7 @@ export function WidgetFrame({
               onClick={() => onMove('right')}
               className={TOOL}
             >
-              <ChevronRight size={15} />
+              <ChevronRight size={18} />
             </button>
           </div>
         </>

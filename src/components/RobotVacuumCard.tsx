@@ -1,50 +1,57 @@
 import { BatteryFull, Bot, House, MapPin, Play, Square } from 'lucide-react'
 import { useState } from 'react'
 import { useSmartHome } from '../hooks/smartHomeContext'
-import { Chip, RoundBtn, Section } from './ui'
-import { shows, type WidgetSize } from '../widgets/types'
+import { RoundBtn, Section } from './ui'
+import { shows, TOUCH, type WidgetSize } from '../widgets/types'
 
 export function RobotVacuumCard({ size = 'm' }: { size?: WidgetSize }) {
   const { state, toggleVacuum, dockVacuum } = useSmartHome()
-  const show = (tier: WidgetSize) => shows(size, tier, 'm')
   const { vacuum } = state
   const cleaning = !vacuum.docked
+  const show = (tier: WidgetSize) => shows(size, tier, 'm')
+  const narrow = size === 's' || size === 'l'
+  const btn = `${TOUCH.round} w-full! rounded-xl`
+
+  const battery = show('m') && (
+    <div className="flex shrink-0 items-center gap-1.5 leading-none">
+      <BatteryFull size={20} className="text-green" />
+      <span className="text-[28px] font-medium tabular-nums">{vacuum.battery}%</span>
+    </div>
+  )
 
   return (
     <Section
+      className={TOUCH.section}
       icon={<Bot size={16} />}
       title="Roomba"
       thumb={0.7}
-      chips={
-        show('m') && (
-          <Chip icon={<BatteryFull size={12} />}>{vacuum.battery}%</Chip>
-        )
-      }
     >
       <div className="flex items-center gap-2.5">
-        <span className="grid h-9 w-9 short:h-8 short:w-8 shrink-0 place-items-center rounded-full bg-tile text-fg">
-          <Bot size={16} />
+        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-tile text-fg">
+          <Bot size={18} />
         </span>
-        <div className="min-w-0 leading-tight">
-          <div className="truncate text-[13px] font-medium">Roomba Vacuum</div>
-          <div className="text-[11px] text-fg-dim">{vacuum.status}</div>
+        <div className="min-w-0 flex-1 leading-tight">
+          <div className="truncate text-[15px] font-medium">Roomba Vacuum</div>
+          <div className="text-[14px] text-fg-dim">{vacuum.status}</div>
         </div>
+        {!narrow && battery}
       </div>
+      {narrow && battery}
       {show('w') && (
-      <div className="grid grid-cols-4 gap-2">
-        <RoundBtn aria-label="Start cleaning" active={cleaning} onClick={() => !cleaning && toggleVacuum()} className="w-full rounded-xl short:w-full">
-          <Play size={15} />
-        </RoundBtn>
-        <RoundBtn aria-label="Stop" onClick={dockVacuum} className="w-full rounded-xl short:w-full">
-          <Square size={14} />
-        </RoundBtn>
-        <RoundBtn aria-label="Locate" className="w-full rounded-xl short:w-full">
-          <MapPin size={15} />
-        </RoundBtn>
-        <RoundBtn aria-label="Return to dock" onClick={dockVacuum} className="w-full rounded-xl short:w-full">
-          <House size={15} />
-        </RoundBtn>
-      </div>
+        <div className={`grid gap-1.5 ${size === 'l' ? 'grid-cols-2' : 'grid-cols-4'}`}>
+          <RoundBtn aria-label="Start cleaning" active={cleaning} onClick={() => !cleaning && toggleVacuum()} className={btn}>
+            <Play size={18} />
+          </RoundBtn>
+          <RoundBtn aria-label="Stop" onClick={dockVacuum} className={btn}>
+            <Square size={16} />
+          </RoundBtn>
+          <RoundBtn aria-label="Locate" className={btn}>
+            <MapPin size={18} />
+          </RoundBtn>
+          <RoundBtn aria-label="Return to dock" onClick={dockVacuum} className={btn}>
+            <House size={18} />
+          </RoundBtn>
+        </div>
       )}
     </Section>
   )
@@ -56,7 +63,7 @@ export function QuickPills() {
   const [active, setActive] = useState('Devices')
 
   return (
-    <div className="flex flex-wrap content-start items-center gap-1.5">
+    <div className="grid grid-cols-[repeat(auto-fill,minmax(96px,1fr))] content-start gap-1.5">
       {PILLS.map((pill) => {
         const on = pill === active
         return (
@@ -65,7 +72,7 @@ export function QuickPills() {
             type="button"
             aria-pressed={on}
             onClick={() => setActive(pill)}
-            className={`press rounded-full px-2.5 py-1 text-[11px] font-medium ${
+            className={`press h-12 rounded-full px-2 text-[14px] font-medium leading-tight ${
               on ? 'glass glass-teal text-fg' : 'glass text-fg-dim hover:text-fg'
             }`}
           >

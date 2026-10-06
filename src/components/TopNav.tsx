@@ -36,14 +36,14 @@ export function TopNav() {
   const { arrangeOn, toggleArrangeMode } = useArrangeMode()
 
   return (
-    <header className="glass glass-bar relative z-30 flex h-11 shrink-0 items-center gap-1 px-3">
+    <header className="glass glass-bar relative z-30 flex h-12 shrink-0 items-center gap-0.5 px-1">
       <button
         type="button"
         aria-label="Menu"
         onClick={() => setMenuOpen((v) => !v)}
-        className="press grid h-8 w-8 shrink-0 place-items-center rounded-lg text-fg hover:bg-white/10"
+        className="press grid h-12 w-12 shrink-0 place-items-center rounded-lg text-fg hover:bg-white/10"
       >
-        <Menu size={18} />
+        <Menu size={22} />
       </button>
 
       <nav
@@ -57,13 +57,13 @@ export function TopNav() {
             aria-label={label}
             aria-current={tab === i}
             onClick={() => setTab(i)}
-            className={`press grid h-8 w-8 shrink-0 place-items-center rounded-lg ${
+            className={`press grid h-12 w-12 shrink-0 place-items-center rounded-lg ${
               tab === i
                 ? 'glass rounded-lg text-fg'
                 : 'text-fg-dim hover:bg-white/10 hover:text-fg'
             }`}
           >
-            <Icon size={16} />
+            <Icon size={20} />
           </button>
         ))}
       </nav>
@@ -73,7 +73,7 @@ export function TopNav() {
           <input
             autoFocus
             placeholder="Search devices…"
-            className="glass h-8 w-36 rounded-lg px-2 text-xs text-fg outline-none placeholder:text-fg-dim"
+            className="glass h-10 w-44 rounded-lg px-3 text-[15px] text-fg outline-none placeholder:text-fg-dim"
             onBlur={() => setSearchOpen(false)}
           />
         )}
@@ -93,24 +93,24 @@ export function TopNav() {
             aria-label={label}
             aria-pressed={pressed}
             onClick={onClick}
-            className={`press grid h-8 w-8 place-items-center rounded-lg text-fg hover:bg-white/10 ${
+            className={`press grid h-12 w-12 place-items-center rounded-lg text-fg hover:bg-white/10 ${
               pressed ? 'bg-tile-hi text-fg' : ''
             }`}
           >
-            <Icon size={16} />
+            <Icon size={20} />
           </button>
         ))}
       </div>
 
       {menuOpen && (
-        <div className="absolute left-3 top-12 w-52 glass rounded-xl p-2 shadow-2xl">
+        <div className="absolute left-3 top-12 w-56 glass rounded-xl p-2 shadow-2xl">
           {['Overview', 'Lights', 'Climate', 'Media', 'Automations', 'Settings'].map(
             (item) => (
               <button
                 key={item}
                 type="button"
                 onClick={() => setMenuOpen(false)}
-                className="press flex w-full items-center rounded-lg px-2.5 py-2 text-left text-xs text-fg hover:bg-white/10"
+                className="press flex h-12 w-full items-center rounded-lg px-3 text-left text-[15px] text-fg hover:bg-white/10"
               >
                 {item}
               </button>

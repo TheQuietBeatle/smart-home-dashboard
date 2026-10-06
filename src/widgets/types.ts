@@ -78,3 +78,22 @@ export function shows(size: WidgetSize, tier: WidgetSize, def: WidgetSize) {
   const rank = (s: WidgetSize) => SIZE_ORDER.indexOf(s)
   return rank(size) >= Math.min(rank(tier), rank(def))
 }
+
+/**
+ * Tablet sizing applied through the ui.tsx primitives' `className` (ui.tsx
+ * itself is left alone): 48px touch targets, >= 14px text. The `!` overrides
+ * win over the primitives' own and `short:` height classes.
+ */
+export const TOUCH = {
+  /** Section: 32px header with a 15px title. */
+  section: '[&>header]:h-8 [&>header>h2]:text-[15px]',
+  /** Pill: 48px tall, 14px label that may wrap onto two lines. */
+  pill: 'h-12! text-[14px]! [&_.truncate]:whitespace-normal [&_.truncate]:leading-tight',
+  /** RoundBtn: 48px circle. */
+  round: 'h-12! w-12!',
+  /** Bare icon button inside a strip or row. */
+  icon: 'press grid h-12 w-12 shrink-0 place-items-center rounded-full',
+  /** Non-interactive header chip (replaces ui.tsx Chip, which is 11px). */
+  chip: 'glass flex h-7 shrink-0 items-center gap-1 rounded-md px-2 text-[14px] font-medium text-fg',
+  badge: 'text-[14px]!',
+} as const

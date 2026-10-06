@@ -40,15 +40,11 @@ export function Dashboard() {
   const { layout } = useWidgetLayout()
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden">
+    <div className="flex h-dvh flex-col overflow-hidden">
       <TopNav />
 
-      <main className="scroll-thin min-h-0 flex-1 overflow-y-auto">
-        <WidgetGrid
-          layout={layout}
-          renderers={RENDERERS}
-          containerClassName="grid-cols-12 gap-2 p-2 short:gap-1"
-        />
+      <main className="scroll-thin min-h-0 flex-1 overflow-x-hidden overflow-y-auto">
+        <WidgetGrid layout={layout} renderers={RENDERERS} />
       </main>
 
       <StatusBar />

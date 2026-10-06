@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { Area, AreaChart, ResponsiveContainer, YAxis } from 'recharts'
+import { Activity } from 'lucide-react'
 import { useSmartHome } from '../hooks/smartHomeContext'
-import { Card, CardHeader } from './ui'
-import { shows, type WidgetSize } from '../widgets/types'
+import { num } from '../lib/format'
+import { Section } from './ui'
+import { shows, TOUCH, type WidgetSize } from '../widgets/types'
 
 const USAGE = [
   { h: 0, kw: 0.4 },
@@ -32,105 +34,95 @@ const USAGE = [
 ]
 
 export function EnergyCard({ size = 'm' }: { size?: WidgetSize }) {
-  const show = (tier: WidgetSize) => shows(size, tier, 'm')
   const { state } = useSmartHome()
   const [nowHour] = useState(() => new Date().getHours())
   const peak = Math.max(...USAGE.map((d) => d.kw))
+  const show = (tier: WidgetSize) => shows(size, tier, 'm')
+  const full = show('w')
+  const narrow = size === 's' || size === 'l'
 
   return (
-    <Card className="flex min-h-0 flex-1 flex-col">
-      <CardHeader
-        title="Energy use"
-        action={
-          <span className="flex items-center gap-1 text-[10px] text-ink-500">
-            Today
-            <b className="font-semibold text-accent-teal tabular-nums">
-              34.2 kWh
-            </b>
-          </span>
-        }
-      />
-
-      <div
-        className={`grid shrink-0 gap-1.5 px-3 pb-1 ${
-          show('m') ? 'grid-cols-3' : 'grid-cols-1'
-        }`}
-      >
-        <Metric
-          label="Now"
-          value={`${state.sensors.energy.toFixed(1)} kW`}
-          tone="cyan"
-        />
-        {show('m') && (
-          <>
-            <Metric label="Peak" value={`${peak.toFixed(1)} kW`} tone="amber" />
-            <Metric label="Forecast" value="€4.80" tone="plain" />
-          </>
+    <Section
+      className={`${TOUCH.section} min-h-0 flex-1`}
+      icon={<Activity size={16} />}
+      title="Energy"
+      thumb={0.5}
+      chips={
+        <span className={TOUCH.chip}>
+          {!narrow && <span className="text-fg-dim">Today</span>}
+          <span className="tabular-nums text-teal">34.2 kWh</span>
+        </span>
+      }
+    >
+      <div className={`flex shrink-0 gap-2 ${narrow && full ? 'flex-col' : 'items-end'}`}>
+        <Metric label="Now" value={`${num(state.sensors.energy)} kW`} primary />
+        {full && (
+          <div className="flex min-w-0 flex-1 gap-2">
+            <Metric label="Peak" value={`${num(peak)} kW`} tone="text-amber" />
+            <Metric label="Forecast" value="€4.80" />
+          </div>
         )}
       </div>
 
       {show('m') && (
-      <div className="min-h-0 flex-1 px-1 pb-1 pt-1">
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={USAGE} margin={{ top: 6, right: 4, bottom: 0, left: 4 }}>
-            <defs>
-              <linearGradient id="energyFill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#22d3ee" stopOpacity={0.55} />
-                <stop offset="100%" stopColor="#22d3ee" stopOpacity={0.02} />
-              </linearGradient>
-            </defs>
-            <YAxis domain={[0, 3.2]} hide />
-            <Area
-              type="monotone"
-              dataKey="kw"
-              stroke="#22d3ee"
-              strokeWidth={1.6}
-              fill="url(#energyFill)"
-              isAnimationActive
-              animationDuration={700}
-              dot={false}
-              activeDot={{ r: 3, fill: '#22d3ee', strokeWidth: 0 }}
-            />
-          </AreaChart>
-        </ResponsiveContainer>
-      </div>
+        <div className="min-h-10 flex-1">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={USAGE} margin={{ top: 4, right: 2, bottom: 0, left: 2 }}>
+              <defs>
+                <linearGradient id="energyFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="var(--color-teal)" stopOpacity={0.6} />
+                  <stop offset="100%" stopColor="var(--color-teal)" stopOpacity={0.02} />
+                </linearGradient>
+              </defs>
+              <YAxis domain={[0, 3.2]} hide />
+              <Area
+                type="monotone"
+                dataKey="kw"
+                stroke="var(--color-sky)"
+                strokeWidth={1.8}
+                fill="url(#energyFill)"
+                isAnimationActive
+                animationDuration={700}
+                dot={false}
+                activeDot={false}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
       )}
 
-      {show('w') && (
-      <div className="flex shrink-0 items-center justify-between px-3 pb-2 text-[8.5px] tabular-nums text-ink-600">
-        <span>00</span>
-        <span>06</span>
-        <span className="font-semibold text-accent-cyan">{nowHour}</span>
-        <span>18</span>
-        <span>23</span>
-      </div>
+      {full && (
+        <div className="flex shrink-0 items-center justify-between text-[14px] leading-none tabular-nums text-fg-dim">
+          <span>00</span>
+          <span>06</span>
+          <span className="font-medium text-sky">{nowHour}</span>
+          <span>18</span>
+          <span>23</span>
+        </div>
       )}
-    </Card>
+    </Section>
   )
 }
 
 function Metric({
   label,
   value,
-  tone,
+  tone = 'text-fg',
+  primary = false,
 }: {
   label: string
   value: string
-  tone: 'cyan' | 'amber' | 'plain'
+  tone?: string
+  primary?: boolean
 }) {
-  const toneClass =
-    tone === 'cyan'
-      ? 'text-accent-cyan'
-      : tone === 'amber'
-        ? 'text-accent-amber'
-        : 'text-ink-200'
-
   return (
-    <div className="rounded-lg border border-line bg-white/[0.02] px-2 py-1">
-      <div className="text-[8px] font-semibold uppercase tracking-widest text-ink-600">
-        {label}
-      </div>
-      <div className={`text-[12px] font-semibold tabular-nums ${toneClass}`}>
+    <div className="min-w-0 flex-1 leading-none">
+      <div className="text-[14px] text-fg-dim">{label}</div>
+      <div
+        className={`mt-1 truncate font-medium tabular-nums ${
+          primary ? 'text-[28px] text-sky' : `text-[18px] ${tone}`
+        }`}
+      >
         {value}
       </div>
     </div>
