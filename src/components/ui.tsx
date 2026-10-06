@@ -162,7 +162,7 @@ export function Section({
   className?: string
 }) {
   return (
-    <section className={`flex shrink-0 flex-col gap-2 ${className}`}>
+    <section className={`flex flex-col gap-2 ${className.includes('flex-1') ? '' : 'shrink-0'} ${className}`}>
       <header className="flex h-6 items-center gap-2">
         <span className="text-fg-dim">{icon}</span>
         <h2 className="text-[13px] font-medium text-fg">{title}</h2>

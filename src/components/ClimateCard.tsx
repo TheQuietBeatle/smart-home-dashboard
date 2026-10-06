@@ -44,7 +44,7 @@ function arc(from: number, to: number) {
   return `M ${a.x} ${a.y} A ${R} ${R} 0 ${large} 1 ${b.x} ${b.y}`
 }
 
-export function ClimateCard() {
+export function ClimateCard({ className = '' }: { className?: string }) {
   const { state, setTemp, setClimateMode, toggleClimatePower } = useSmartHome()
   const { climate, sensors } = state
   const ratio = (climate.targetTemp - MIN) / (MAX - MIN)
@@ -54,6 +54,7 @@ export function ClimateCard() {
 
   return (
     <Section
+      className={className}
       icon={<House size={16} />}
       title="Home"
       thumb={0.4}
@@ -65,7 +66,7 @@ export function ClimateCard() {
         </>
       }
     >
-      <div className="relative flex items-center justify-center">
+      <div className="relative flex min-h-[210px] flex-1 items-center justify-center">
         <h3 className="absolute left-1/2 top-0 -translate-x-1/2 text-[13px] text-fg">
           Air Conditioner
         </h3>
@@ -74,7 +75,7 @@ export function ClimateCard() {
           className="absolute right-1 top-0 text-fg-dim"
           aria-hidden
         />
-        <div className="relative w-[200px] max-w-full pt-3">
+        <div className="relative mt-4 aspect-square h-full max-h-[300px] min-h-[190px]">
           <svg viewBox="0 0 200 200" className="block w-full" role="img" aria-label={`Target temperature ${num(climate.targetTemp)} degrees`}>
             <path d={arc(START, START + SWEEP)} fill="none" strokeWidth={9} strokeLinecap="round" className="stroke-rail" />
             <path

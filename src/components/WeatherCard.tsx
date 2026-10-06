@@ -30,7 +30,7 @@ export function WeatherCard({ className = '' }: { className?: string }) {
         </>
       }
     >
-      <div className="flex items-center justify-center gap-5 py-1">
+      <div className="flex items-center justify-center gap-5 py-2">
         {weather.isNight ? (
           <Moon size={52} strokeWidth={1.4} className="text-sky" />
         ) : (
@@ -47,7 +47,7 @@ export function WeatherCard({ className = '' }: { className?: string }) {
         </div>
       </div>
 
-      <ul className="flex flex-col gap-1.5" aria-label="Forecast">
+      <ul className="flex flex-1 flex-col justify-between gap-1.5" aria-label="Forecast">
         {days.map((d, i) => (
           <li key={d.day} className="flex items-center gap-2 text-[11px]">
             <span className="w-7 text-fg-dim">{d.day}</span>

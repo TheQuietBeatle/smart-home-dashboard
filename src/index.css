@@ -51,6 +51,7 @@
   --color-steel: #2f6fa8;
   --color-sky: #8fd3ee;
   --color-cold: #4a90d9;
+  --breakpoint-lg: 56rem;
   --font-ui: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 

@@ -10,13 +10,13 @@ const ICONS = {
   car: Car,
 }
 
-export function StatusCards() {
+export function StatusCards({ className = '' }: { className?: string }) {
   const { state, toggleStatus } = useSmartHome()
   const of = (kind: StatusCard['kind']) =>
     state.statusCards.filter((c) => c.kind === kind)
 
   return (
-    <div className="flex shrink-0 flex-col gap-2">
+    <div className={`flex flex-col gap-2 ${className}`}>
       <div className="grid grid-cols-2 gap-2">
         {of('pill').map((c) => {
           const Icon = ICONS[c.icon]
@@ -64,11 +64,11 @@ export function StatusCards() {
         })}
       </div>
 
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid min-h-24 flex-1 grid-cols-2 gap-2">
         {['Entrance', 'Courtyard'].map((name) => (
           <div
             key={name}
-            className="relative aspect-[16/10] overflow-hidden rounded-xl bg-gradient-to-br from-[#3a3f47] via-[#23272e] to-[#14171c]"
+            className="relative overflow-hidden rounded-xl bg-gradient-to-br from-[#3a3f47] via-[#23272e] to-[#14171c]"
           >
             <Camera
               size={16}

@@ -38,12 +38,13 @@ const ICONS: Partial<Record<DeviceId, typeof Bed>> = {
   'light.floor': LampFloor,
 }
 
-export function LightingPanel() {
+export function LightingPanel({ className = '' }: { className?: string }) {
   const { state, toggleLight, setBlinds } = useSmartHome()
   const open = state.lights['cover.blinds']
 
   return (
     <Section
+      className={className}
       icon={<Lamp size={16} />}
       title="Indoor Lights"
       thumb={0.55}
@@ -54,7 +55,7 @@ export function LightingPanel() {
         </>
       }
     >
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid min-h-[84px] flex-1 grid-cols-2 gap-2">
         {BIG.map((id) => {
           const on = state.lights[id]
           const Icon = id === 'light.sofa' ? Sofa : on ? Lamp : LightbulbOff
@@ -64,7 +65,7 @@ export function LightingPanel() {
               type="button"
               aria-pressed={on}
               onClick={() => toggleLight(id)}
-              className={`press flex h-[84px] flex-col items-center justify-center gap-2 rounded-2xl text-[13px] font-medium ${
+              className={`press flex flex-col items-center justify-center gap-2 rounded-2xl text-[13px] font-medium ${
                 on ? 'bg-teal' : 'bg-tile hover:bg-tile-hi'
               }`}
             >
@@ -75,7 +76,7 @@ export function LightingPanel() {
         })}
       </div>
 
-      <div className="grid grid-cols-2 gap-x-2 gap-y-2">
+      <div className="grid grid-cols-2 gap-2 [&>button]:h-full [&>button]:min-h-9" style={{ flexGrow: 0.3 }}>
         {ROWS.flat().map((id) => {
           const Icon = ICONS[id] ?? Lightbulb
           return (
