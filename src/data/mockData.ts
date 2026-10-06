@@ -11,11 +11,11 @@ export const LIGHT_LABELS: Record<DeviceId, string> = {
   'light.table': 'Luce Tavolo',
   'light.sofa': 'Luce Divano',
   'light.bed': 'Letto',
-  'light.tvled': 'LDTV',
+  'light.tvled': 'LED TV',
   'light.lamp': 'Lampada',
   'light.kitchen_led': 'LED Cucina',
   'light.kitchen': 'Luce Cucina',
-  'light.warm': 'Luce Calda',
+  'light.warm': 'Libreria',
   'light.wall': 'Muro',
   'light.floor': 'Piano',
   'cover.blinds': 'Tapparelle',
@@ -36,48 +36,29 @@ export const LIGHT_ICONS: Record<DeviceId, string> = {
 }
 
 export const FORECAST: ForecastDay[] = [
-  { day: 'Mon', icon: 'sun', min: 9, max: 18 },
-  { day: 'Tue', icon: 'partly', min: 10, max: 19 },
-  { day: 'Wed', icon: 'cloud', min: 8, max: 15 },
-  { day: 'Thu', icon: 'rain', min: 7, max: 13 },
-  { day: 'Fri', icon: 'partly', min: 9, max: 17 },
-  { day: 'Sat', icon: 'sun', min: 11, max: 21 },
+  { day: 'Lun', icon: 'moon', min: -2, max: 3 },
+  { day: 'Mar', icon: 'sun', min: -3, max: 7 },
+  { day: 'Mer', icon: 'sun', min: -3, max: 7 },
+  { day: 'Gio', icon: 'partly', min: -4, max: 9 },
+  { day: 'Ven', icon: 'cloud', min: -1, max: 11 },
+  { day: 'Sab', icon: 'sun', min: -2, max: 11 },
 ]
 
 export const STATUS_CARDS: StatusCard[] = [
-  {
-    id: 'garage',
-    label: 'Garage',
-    value: 'Chiuso',
-    detail: 'Portone principale',
-    icon: 'garage',
-    active: false,
-  },
-  {
-    id: 'gate',
-    label: 'Cancello',
-    value: 'Chiuso',
-    detail: 'Ingresso casa',
-    icon: 'gate',
-    active: false,
-  },
-  {
-    id: 'car',
-    label: 'Auto',
-    value: 'In garage',
-    detail: '2.4 km · 78%',
-    icon: 'car',
-    active: true,
-  },
-  {
-    id: 'sensor',
-    label: 'Esterno',
-    value: '18.2°C',
-    detail: 'Umidità 64%',
-    icon: 'sensor',
-    active: true,
-  },
+  { id: 'portone', kind: 'pill', label: 'Portone', detail: '', icon: 'gate', badge: '10%', active: true },
+  { id: 'cassetto', kind: 'pill', label: 'LED Cassetto', detail: '', icon: 'led', active: false },
+  { id: 'garage-c', kind: 'garage', label: 'Garage Clarissa', detail: '50 minuti fa', icon: 'garage', active: true },
+  { id: 'garage-d', kind: 'garage', label: 'Garage Davide', detail: '50 minuti fa', icon: 'garage', active: true },
+  { id: 'taigo', kind: 'vehicle', label: 'Taigo', detail: '95 km', icon: 'car', active: false },
+  { id: 'q3', kind: 'vehicle', label: 'Q3', detail: '140 km', icon: 'car', active: false },
 ]
+
+export const APPLIANCES = [
+  { id: 'heat', label: 'Heat', value: '60,0 °C', badge: '1', active: true },
+  { id: 'wash', label: 'Wash', value: '0 W', badge: 'Stop', active: false },
+] as const
+
+export const PHONE_BATTERY = 35
 
 export const TRACKS: Track[] = [
   {
@@ -107,12 +88,11 @@ export const TRACKS: Track[] = [
 ]
 
 export const AUTOMATIONS: Automation[] = [
-  { id: 'home', label: 'Casa', icon: 'home', active: true },
-  { id: 'night', label: 'Notte', icon: 'moon', active: false },
   { id: 'away', label: 'Via', icon: 'away', active: false },
+  { id: 'night', label: 'Notte', icon: 'moon', active: false },
+  { id: 'home', label: 'Giorno', icon: 'home', active: true },
   { id: 'dinner', label: 'Cena', icon: 'dinner', active: false },
   { id: 'movie', label: 'Film', icon: 'movie', active: false },
-  { id: 'sleep', label: 'Sonno', icon: 'sleep', active: false },
 ]
 
 export const INITIAL_STATE: SmartHomeState = {
@@ -120,26 +100,26 @@ export const INITIAL_STATE: SmartHomeState = {
     'light.table': false,
     'light.sofa': false,
     'light.bed': false,
-    'light.tvled': true,
+    'light.tvled': false,
     'light.lamp': true,
-    'light.kitchen_led': false,
-    'light.kitchen': false,
+    'light.kitchen_led': true,
+    'light.kitchen': true,
     'light.warm': false,
     'light.wall': false,
-    'light.floor': false,
+    'light.floor': true,
     'cover.blinds': true,
   },
   climate: {
-    power: true,
+    power: false,
     targetTemp: 18.5,
-    currentTemp: 20.2,
+    currentTemp: 30,
     mode: 'cool',
     fan: 'auto',
   },
   weather: {
-    temp: 18,
-    feels: 17,
-    humidity: 64,
+    temp: 3,
+    feels: 1,
+    humidity: 61,
     wind: 8,
     condition: 'Sereno',
     isNight: true,
@@ -147,8 +127,9 @@ export const INITIAL_STATE: SmartHomeState = {
   },
   statusCards: STATUS_CARDS,
   media: {
-    source: 'spotify',
+    source: 'pc',
     playing: true,
+    echoPlaying: true,
     trackIndex: 0,
     volume: 42,
     tvOn: false,
@@ -164,8 +145,8 @@ export const INITIAL_STATE: SmartHomeState = {
   sensors: {
     indoorTemp: 21.4,
     indoorHumidity: 48,
-    outdoorTemp: 18.2,
-    outdoorHumidity: 64,
+    outdoorTemp: 3,
+    outdoorHumidity: 61,
     energy: 1.4,
   },
   activeScene: 'home',

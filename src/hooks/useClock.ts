@@ -6,20 +6,20 @@ export interface Clock {
   shortDate: string
 }
 
-const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+const DAYS = ['dom', 'lun', 'mar', 'mer', 'gio', 'ven', 'sab']
 const MONTHS = [
   'Jan',
   'Feb',
   'Mar',
   'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
+  'Mag',
+  'Giu',
+  'Lug',
+  'Ago',
+  'Set',
+  'Ott',
   'Nov',
-  'Dec',
+  'Dic',
 ]
 
 export function useClock(): Clock {
