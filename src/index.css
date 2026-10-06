@@ -1,5 +1,8 @@
 @import 'tailwindcss';
 
+/* Short wall tablets (e.g. 960x600): tighten spacing so the grid never scrolls */
+@custom-variant short (@media (max-height: 680px) and (min-width: 56rem));
+
 @theme {
   /* base surfaces */
   --color-base-950: #070c16;

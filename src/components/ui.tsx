@@ -89,7 +89,7 @@ export function Pill({
     <button
       type="button"
       aria-pressed={active}
-      className={`press flex h-9 min-w-0 items-center gap-2 rounded-full px-1.5 pr-3 text-left text-[13px] font-medium ${
+      className={`press flex h-9 min-w-0 items-center gap-2 rounded-full short:h-8 px-1.5 pr-3 text-left text-[13px] font-medium ${
         active ? TONE_ON[tone] : 'bg-tile text-fg hover:bg-tile-hi'
       } ${className}`}
       {...rest}
@@ -162,8 +162,8 @@ export function Section({
   className?: string
 }) {
   return (
-    <section className={`flex flex-col gap-2 ${className.includes('flex-1') ? '' : 'shrink-0'} ${className}`}>
-      <header className="flex h-6 items-center gap-2">
+    <section className={`flex flex-col gap-2 short:gap-1.5 ${className.includes('flex-1') ? '' : 'shrink-0'} ${className}`}>
+      <header className="flex h-6 items-center gap-2 short:h-5">
         <span className="text-fg-dim">{icon}</span>
         <h2 className="text-[13px] font-medium text-fg">{title}</h2>
         <span aria-hidden className="relative mx-1 h-[3px] flex-1 rounded-full bg-rail">
@@ -193,7 +193,7 @@ export function RoundBtn({
   return (
     <button
       type="button"
-      className={`press grid h-9 w-9 shrink-0 place-items-center rounded-full ${
+      className={`press grid h-9 w-9 shrink-0 place-items-center rounded-full short:h-8 short:w-8 ${
         active ? TONE_ON[tone] : 'bg-tile text-fg hover:bg-tile-hi'
       } ${className}`}
       {...rest}

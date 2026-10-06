@@ -55,7 +55,7 @@ export function LightingPanel({ className = '' }: { className?: string }) {
         </>
       }
     >
-      <div className="grid min-h-[84px] flex-1 grid-cols-2 gap-2">
+      <div className="grid min-h-[84px] short:min-h-[52px] flex-1 grid-cols-2 gap-2">
         {BIG.map((id) => {
           const on = state.lights[id]
           const Icon = id === 'light.sofa' ? Sofa : on ? Lamp : LightbulbOff
@@ -94,7 +94,7 @@ export function LightingPanel({ className = '' }: { className?: string }) {
       </div>
 
       <div
-        className={`flex h-11 items-center gap-2 rounded-full px-2 ${
+        className={`flex h-11 short:h-10 items-center gap-2 rounded-full px-2 ${
           open ? 'bg-blue text-fg' : 'bg-tile text-fg'
         }`}
       >

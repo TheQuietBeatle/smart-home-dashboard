@@ -45,14 +45,14 @@ export function MediaPanel() {
             active={media.source === id}
             icon={<Icon size={13} />}
             onClick={() => setSource(id)}
-            className="pr-2"
+            className="gap-1 pr-2 max-[1100px]:[&>span:first-child]:hidden max-[1100px]:pl-3"
           >
             {label}
           </Pill>
         ))}
       </div>
 
-      <div className="flex h-11 items-center gap-1.5 rounded-full bg-tile px-1.5">
+      <div className="flex h-11 short:h-10 items-center gap-1.5 rounded-full bg-tile px-1.5">
         <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-green text-bg">
           <Disc3 size={16} />
         </span>
@@ -81,7 +81,7 @@ export function MediaPanel() {
         </button>
       </div>
 
-      <div className="flex h-11 items-center gap-1.5 rounded-full bg-tile px-1.5">
+      <div className="flex h-11 short:h-10 items-center gap-1.5 rounded-full bg-tile px-1.5">
         <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-[#e5484d] to-[#a3262b] text-fg">
           <Speaker size={15} />
         </span>

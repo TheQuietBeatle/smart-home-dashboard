@@ -66,7 +66,7 @@ export function ClimateCard({ className = '' }: { className?: string }) {
         </>
       }
     >
-      <div className="relative flex min-h-[210px] flex-1 items-center justify-center">
+      <div className="relative min-h-[210px] flex-1 short:min-h-[120px]">
         <h3 className="absolute left-1/2 top-0 -translate-x-1/2 text-[13px] text-fg">
           Air Conditioner
         </h3>
@@ -75,8 +75,8 @@ export function ClimateCard({ className = '' }: { className?: string }) {
           className="absolute right-1 top-0 text-fg-dim"
           aria-hidden
         />
-        <div className="relative mt-4 aspect-square h-full max-h-[300px] min-h-[190px]">
-          <svg viewBox="0 0 200 200" className="block w-full" role="img" aria-label={`Target temperature ${num(climate.targetTemp)} degrees`}>
+        <div className="absolute inset-y-0 top-5 left-1/2 aspect-square max-w-full -translate-x-1/2">
+          <svg viewBox="0 0 200 200" className="absolute inset-0 h-full w-full" role="img" aria-label={`Target temperature ${num(climate.targetTemp)} degrees`}>
             <path d={arc(START, START + SWEEP)} fill="none" strokeWidth={9} strokeLinecap="round" className="stroke-rail" />
             <path
               d={arc(START, Math.max(end, START + 0.1))}
@@ -91,7 +91,7 @@ export function ClimateCard({ className = '' }: { className?: string }) {
             <div className="text-[11px] text-fg-dim">
               {climate.power ? modeLabel : 'Off'}
             </div>
-            <div className="mt-1 text-[44px] font-medium tabular-nums tracking-tight">
+            <div className="mt-1 text-[44px] short:text-[32px] font-medium tabular-nums tracking-tight">
               {num(climate.targetTemp)}
             </div>
             <div className="mt-1 flex items-center justify-center gap-1 text-[11px] text-fg-dim">
@@ -144,7 +144,7 @@ export function ClimateCard({ className = '' }: { className?: string }) {
         {APPLIANCES.map((a) => (
           <div
             key={a.id}
-            className={`flex h-10 min-w-0 items-center gap-2 rounded-full px-1.5 pr-3 ${
+            className={`flex h-10 short:h-9 min-w-0 items-center gap-2 rounded-full px-1.5 pr-3 ${
               a.active ? 'bg-steel' : 'bg-tile'
             }`}
           >
