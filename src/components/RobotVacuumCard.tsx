@@ -19,21 +19,21 @@ export function RobotVacuumCard() {
           <Bot size={16} />
         </span>
         <div className="min-w-0 leading-tight">
-          <div className="truncate text-[13px] font-medium">Aspirapolvere Roomba</div>
+          <div className="truncate text-[13px] font-medium">Roomba Vacuum</div>
           <div className="text-[11px] text-fg-dim">{vacuum.status}</div>
         </div>
       </div>
       <div className="grid grid-cols-4 gap-2">
-        <RoundBtn aria-label="Avvia pulizia" active={cleaning} onClick={() => !cleaning && toggleVacuum()} className="w-full rounded-xl">
+        <RoundBtn aria-label="Start cleaning" active={cleaning} onClick={() => !cleaning && toggleVacuum()} className="w-full rounded-xl">
           <Play size={15} />
         </RoundBtn>
-        <RoundBtn aria-label="Ferma" onClick={dockVacuum} className="w-full rounded-xl">
+        <RoundBtn aria-label="Stop" onClick={dockVacuum} className="w-full rounded-xl">
           <Square size={14} />
         </RoundBtn>
-        <RoundBtn aria-label="Localizza" className="w-full rounded-xl">
+        <RoundBtn aria-label="Locate" className="w-full rounded-xl">
           <MapPin size={15} />
         </RoundBtn>
-        <RoundBtn aria-label="Torna alla base" onClick={dockVacuum} className="w-full rounded-xl">
+        <RoundBtn aria-label="Return to dock" onClick={dockVacuum} className="w-full rounded-xl">
           <House size={15} />
         </RoundBtn>
       </div>

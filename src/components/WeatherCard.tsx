@@ -19,7 +19,7 @@ export function WeatherCard({ className = '' }: { className?: string }) {
     <Section
       className={className}
       icon={<House size={16} />}
-      title="Esterno"
+      title="Outdoor"
       thumb={0.62}
       chips={
         <>
@@ -47,7 +47,7 @@ export function WeatherCard({ className = '' }: { className?: string }) {
         </div>
       </div>
 
-      <ul className="flex flex-col gap-1.5" aria-label="Previsioni">
+      <ul className="flex flex-col gap-1.5" aria-label="Forecast">
         {days.map((d, i) => (
           <li key={d.day} className="flex items-center gap-2 text-[11px]">
             <span className="w-7 text-fg-dim">{d.day}</span>

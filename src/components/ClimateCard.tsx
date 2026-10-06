@@ -26,10 +26,10 @@ const SWEEP = 270
 
 const MODES: { id: ClimateMode; icon: typeof Fan; label: string }[] = [
   { id: 'auto', icon: Sparkles, label: 'Auto' },
-  { id: 'dry', icon: Droplets, label: 'Deumidifica' },
-  { id: 'heat', icon: Flame, label: 'Caldo' },
-  { id: 'cool', icon: Snowflake, label: 'Freddo' },
-  { id: 'fan', icon: Fan, label: 'Ventola' },
+  { id: 'dry', icon: Droplets, label: 'Dry' },
+  { id: 'heat', icon: Flame, label: 'Heat' },
+  { id: 'cool', icon: Snowflake, label: 'Cool' },
+  { id: 'fan', icon: Fan, label: 'Fan' },
 ]
 
 function polar(deg: number) {
@@ -55,7 +55,7 @@ export function ClimateCard() {
   return (
     <Section
       icon={<House size={16} />}
-      title="Casa"
+      title="Home"
       thumb={0.4}
       chips={
         <>
@@ -67,7 +67,7 @@ export function ClimateCard() {
     >
       <div className="relative flex items-center justify-center">
         <h3 className="absolute left-1/2 top-0 -translate-x-1/2 text-[13px] text-fg">
-          Climatizzatore
+          Air Conditioner
         </h3>
         <EllipsisVertical
           size={16}
@@ -75,7 +75,7 @@ export function ClimateCard() {
           aria-hidden
         />
         <div className="relative w-[200px] max-w-full pt-3">
-          <svg viewBox="0 0 200 200" className="block w-full" role="img" aria-label={`Temperatura impostata ${num(climate.targetTemp)} gradi`}>
+          <svg viewBox="0 0 200 200" className="block w-full" role="img" aria-label={`Target temperature ${num(climate.targetTemp)} degrees`}>
             <path d={arc(START, START + SWEEP)} fill="none" strokeWidth={9} strokeLinecap="round" className="stroke-rail" />
             <path
               d={arc(START, Math.max(end, START + 0.1))}
@@ -88,7 +88,7 @@ export function ClimateCard() {
           </svg>
           <div className="absolute inset-x-0 top-[34%] text-center leading-none">
             <div className="text-[11px] text-fg-dim">
-              {climate.power ? modeLabel : 'Spento/a'}
+              {climate.power ? modeLabel : 'Off'}
             </div>
             <div className="mt-1 text-[44px] font-medium tabular-nums tracking-tight">
               {num(climate.targetTemp)}
@@ -100,7 +100,7 @@ export function ClimateCard() {
           </div>
           <button
             type="button"
-            aria-label="Abbassa temperatura"
+            aria-label="Lower temperature"
             onClick={() => setTemp(-0.5)}
             className="press absolute bottom-3 left-2 grid h-7 w-7 place-items-center rounded-full bg-tile text-fg hover:bg-tile-hi"
           >
@@ -108,7 +108,7 @@ export function ClimateCard() {
           </button>
           <button
             type="button"
-            aria-label="Alza temperatura"
+            aria-label="Raise temperature"
             onClick={() => setTemp(0.5)}
             className="press absolute bottom-3 right-2 grid h-7 w-7 place-items-center rounded-full bg-tile text-fg hover:bg-tile-hi"
           >
@@ -129,7 +129,7 @@ export function ClimateCard() {
           </RoundBtn>
         ))}
         <RoundBtn
-          aria-label="Spegni"
+          aria-label="Turn off"
           aria-pressed={!climate.power}
           active={!climate.power}
           tone="steel"

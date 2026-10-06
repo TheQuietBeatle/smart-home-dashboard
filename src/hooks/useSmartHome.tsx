@@ -14,7 +14,7 @@ import {
   type SmartHomeContextValue,
 } from './smartHomeContext'
 
-const STORAGE_KEY = 'casa-dashboard-state-v2'
+const STORAGE_KEY = 'casa-dashboard-state-v3'
 
 function loadInitial(): SmartHomeState {
   if (typeof window === 'undefined') return INITIAL_STATE

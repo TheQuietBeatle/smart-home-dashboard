@@ -16,16 +16,16 @@ import {
 import { useState } from 'react'
 
 const TABS = [
-  { icon: House, label: 'Casa' },
-  { icon: Building, label: 'Piano terra' },
-  { icon: Building2, label: 'Primo piano' },
-  { icon: House, label: 'Giardino' },
+  { icon: House, label: 'Home' },
+  { icon: Building, label: 'Ground floor' },
+  { icon: Building2, label: 'First floor' },
+  { icon: House, label: 'Garden' },
   { icon: Warehouse, label: 'Garage' },
-  { icon: Server, label: 'Sistema' },
+  { icon: Server, label: 'System' },
   { icon: Tv, label: 'Media' },
-  { icon: Users, label: 'Persone' },
+  { icon: Users, label: 'People' },
   { icon: Car, label: 'Auto' },
-  { icon: LayoutDashboard, label: 'Panoramica' },
+  { icon: LayoutDashboard, label: 'Overview' },
 ]
 
 export function TopNav() {
@@ -45,7 +45,7 @@ export function TopNav() {
       </button>
 
       <nav
-        aria-label="Viste"
+        aria-label="Views"
         className="scroll-thin flex min-w-0 flex-1 items-center gap-0.5 overflow-x-auto px-1"
       >
         {TABS.map(({ icon: Icon, label }, i) => (
@@ -70,15 +70,15 @@ export function TopNav() {
         {searchOpen && (
           <input
             autoFocus
-            placeholder="Cerca dispositivi…"
+            placeholder="Search devices…"
             className="h-8 w-36 rounded-lg bg-tile px-2 text-xs text-fg outline-none placeholder:text-fg-dim"
             onBlur={() => setSearchOpen(false)}
           />
         )}
         {[
-          { icon: Search, label: 'Cerca', onClick: () => setSearchOpen(true) },
-          { icon: MessageSquare, label: 'Assistente' },
-          { icon: Pencil, label: 'Modifica dashboard' },
+          { icon: Search, label: 'Search', onClick: () => setSearchOpen(true) },
+          { icon: MessageSquare, label: 'Assistant' },
+          { icon: Pencil, label: 'Edit dashboard' },
         ].map(({ icon: Icon, label, onClick }) => (
           <button
             key={label}
@@ -94,7 +94,7 @@ export function TopNav() {
 
       {menuOpen && (
         <div className="absolute left-3 top-12 w-52 rounded-xl bg-tile p-2 shadow-2xl">
-          {['Panoramica', 'Luci', 'Clima', 'Media', 'Automazioni', 'Impostazioni'].map(
+          {['Overview', 'Luci', 'Clima', 'Media', 'Automazioni', 'Impostazioni'].map(
             (item) => (
               <button
                 key={item}

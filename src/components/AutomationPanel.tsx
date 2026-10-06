@@ -26,7 +26,7 @@ export function AutomationPanel() {
   return (
     <Section
       icon={<Settings size={16} />}
-      title="Automazioni"
+      title="Automations"
       thumb={0.3}
       chips={<Chip icon={<Smartphone size={12} />}>{PHONE_BATTERY}%</Chip>}
     >

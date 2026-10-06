@@ -65,7 +65,7 @@ export function StatusCards() {
       </div>
 
       <div className="grid grid-cols-2 gap-2">
-        {['Ingresso', 'Cortile'].map((name) => (
+        {['Entrance', 'Courtyard'].map((name) => (
           <div
             key={name}
             className="relative aspect-[16/10] overflow-hidden rounded-xl bg-gradient-to-br from-[#3a3f47] via-[#23272e] to-[#14171c]"

@@ -45,7 +45,7 @@ export function LightingPanel() {
   return (
     <Section
       icon={<Lamp size={16} />}
-      title="Luci Interne"
+      title="Indoor Lights"
       thumb={0.55}
       chips={
         <>
@@ -105,12 +105,12 @@ export function LightingPanel() {
             {LIGHT_LABELS['cover.blinds']}
           </span>
           <span className="block truncate text-[10px] opacity-80">
-            {open ? 'Aperta' : 'Chiusa'}
+            {open ? 'Open' : 'Closed'}
           </span>
         </span>
         <button
           type="button"
-          aria-label="Apri tapparelle"
+          aria-label="Open blinds"
           onClick={() => setBlinds(true)}
           className="press grid h-8 w-8 place-items-center rounded-full bg-black/25 hover:bg-black/35"
         >
@@ -118,7 +118,7 @@ export function LightingPanel() {
         </button>
         <button
           type="button"
-          aria-label="Chiudi tapparelle"
+          aria-label="Close blinds"
           onClick={() => setBlinds(false)}
           className="press grid h-8 w-8 place-items-center rounded-full bg-black/25 hover:bg-black/35"
         >

@@ -74,7 +74,7 @@ export interface MediaState {
 export interface VacuumState {
   docked: boolean
   battery: number
-  status: 'Alla base' | 'In pulizia' | 'In carica'
+  status: 'Docked' | 'Cleaning' | 'Charging'
 }
 
 export interface Automation {

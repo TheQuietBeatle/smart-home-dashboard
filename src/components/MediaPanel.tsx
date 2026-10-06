@@ -59,21 +59,21 @@ export function MediaPanel() {
         <span className="min-w-0 flex-1 truncate text-[13px] font-medium">
           Spotify
         </span>
-        <button type="button" aria-label="Casuale" className="press grid h-8 w-8 place-items-center rounded-full text-fg-dim hover:text-fg">
+        <button type="button" aria-label="Shuffle" className="press grid h-8 w-8 place-items-center rounded-full text-fg-dim hover:text-fg">
           <Shuffle size={14} />
         </button>
-        <button type="button" aria-label="Precedente" onClick={previous} className="press grid h-8 w-8 place-items-center rounded-full hover:bg-tile-hi">
+        <button type="button" aria-label="Previous" onClick={previous} className="press grid h-8 w-8 place-items-center rounded-full hover:bg-tile-hi">
           <SkipBack size={14} />
         </button>
-        <button type="button" aria-label={media.playing ? 'Pausa' : 'Riproduci'} onClick={togglePlay} className="press grid h-8 w-8 place-items-center rounded-full hover:bg-tile-hi">
+        <button type="button" aria-label={media.playing ? 'Pause' : 'Play'} onClick={togglePlay} className="press grid h-8 w-8 place-items-center rounded-full hover:bg-tile-hi">
           {media.playing ? <Pause size={15} /> : <Play size={15} />}
         </button>
-        <button type="button" aria-label="Successivo" onClick={next} className="press grid h-8 w-8 place-items-center rounded-full hover:bg-tile-hi">
+        <button type="button" aria-label="Next" onClick={next} className="press grid h-8 w-8 place-items-center rounded-full hover:bg-tile-hi">
           <SkipForward size={14} />
         </button>
         <button
           type="button"
-          aria-label={muted ? 'Riattiva audio' : 'Silenzia'}
+          aria-label={muted ? 'Unmute' : 'Mute'}
           onClick={() => setVolume(muted ? 42 : 0)}
           className="press grid h-8 w-8 place-items-center rounded-lg bg-amber text-bg"
         >
@@ -88,11 +88,11 @@ export function MediaPanel() {
         <span className="min-w-0 flex-1 truncate text-[13px] font-medium">
           Echo Show 5
         </span>
-        <button type="button" aria-label="Trasmetti" className="press grid h-8 w-8 place-items-center rounded-full text-fg-dim hover:text-fg">
+        <button type="button" aria-label="Cast" className="press grid h-8 w-8 place-items-center rounded-full text-fg-dim hover:text-fg">
           <Cast size={14} />
         </button>
         <RoundBtn
-          aria-label={media.echoPlaying ? 'Pausa Echo' : 'Riproduci Echo'}
+          aria-label={media.echoPlaying ? 'Pause Echo' : 'Play Echo'}
           active={media.echoPlaying}
           tone="amber"
           className="h-8 w-8"

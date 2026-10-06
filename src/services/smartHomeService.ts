@@ -193,15 +193,15 @@ export function toggleVacuum(state: SmartHomeState): SmartHomeState {
   return {
     ...state,
     vacuum: cleaning
-      ? { docked: false, battery: state.vacuum.battery, status: 'In pulizia' }
-      : { docked: true, battery: state.vacuum.battery, status: 'Alla base' },
+      ? { docked: false, battery: state.vacuum.battery, status: 'Cleaning' }
+      : { docked: true, battery: state.vacuum.battery, status: 'Docked' },
   }
 }
 
 export function returnVacuumToBase(state: SmartHomeState): SmartHomeState {
   return {
     ...state,
-    vacuum: { ...state.vacuum, docked: true, status: 'Alla base' },
+    vacuum: { ...state.vacuum, docked: true, status: 'Docked' },
   }
 }
 
@@ -254,7 +254,7 @@ const SCENE_EFFECTS: Record<
     ) as SmartHomeState['lights'],
     climate: { ...s.climate, power: false },
     media: { ...s.media, tvOn: false, playing: false },
-    vacuum: { ...s.vacuum, docked: false, status: 'In pulizia' },
+    vacuum: { ...s.vacuum, docked: false, status: 'Cleaning' },
   }),
   dinner: (s) => ({
     ...s,
@@ -306,7 +306,7 @@ const SCENE_EFFECTS: Record<
     ) as SmartHomeState['lights'],
     climate: { ...s.climate, power: true, targetTemp: 17, mode: 'auto', fan: 'low' },
     media: { ...s.media, tvOn: false, playing: false },
-    vacuum: { ...s.vacuum, docked: true, status: 'Alla base' },
+    vacuum: { ...s.vacuum, docked: true, status: 'Docked' },
   }),
 }
 
