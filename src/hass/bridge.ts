@@ -1,4 +1,5 @@
-import type { HassConfig, HassEntity } from './client'
+import type { HassEntity } from './client'
+import type { HassConfig } from './config'
 import { callService } from './client'
 import { HA_ENTITY_MAP } from '../services/smartHomeService'
 import type {

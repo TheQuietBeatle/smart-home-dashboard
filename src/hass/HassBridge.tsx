@@ -15,14 +15,15 @@ export function HassBridge() {
   const cfgRef = useRef<HassConfig | null>(null)
   const prevRef = useRef(state)
   const inboundRef = useRef(false)
-  const [status, setStatus] = useState<'off' | 'connecting' | 'live' | 'error'>('off')
+  const [status, setStatus] = useState<'off' | 'connecting' | 'live' | 'error'>(
+    () => (readConfig() ? 'connecting' : 'off'),
+  )
 
   useEffect(() => {
     const cfg = readConfig()
     if (!cfg) return
 
     cfgRef.current = cfg
-    setStatus('connecting')
 
     const offStatus = subscribeStatus((connected) => {
       setStatus(connected ? 'live' : 'connecting')

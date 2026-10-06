@@ -94,7 +94,7 @@ export function TopNav() {
 
       {menuOpen && (
         <div className="absolute left-3 top-12 w-52 rounded-xl bg-tile p-2 shadow-2xl">
-          {['Overview', 'Luci', 'Clima', 'Media', 'Automazioni', 'Impostazioni'].map(
+          {['Overview', 'Lights', 'Climate', 'Media', 'Automations', 'Settings'].map(
             (item) => (
               <button
                 key={item}
