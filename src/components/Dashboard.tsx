@@ -12,20 +12,20 @@ export function Dashboard() {
     <div className="flex h-screen flex-col overflow-hidden">
       <TopNav />
 
-      <main className="scroll-thin grid min-h-0 flex-1 grid-cols-1 gap-x-5 gap-y-4 overflow-y-auto p-3 md:grid-cols-2 xl:grid-cols-[1fr_1.15fr_1.1fr]">
-        <div className="flex flex-col gap-3">
+      <main className="scroll-thin grid min-h-0 flex-1 grid-cols-1 gap-x-4 gap-y-4 overflow-y-auto p-4 short:gap-y-2 short:p-3 md:grid-cols-2 lg:grid-cols-[1fr_1.15fr_1.1fr] lg:grid-rows-[minmax(min-content,1fr)]">
+        <div className="flex flex-col gap-3 short:gap-2">
           <WeatherCard className="shrink-0" />
-          <StatusCards />
+          <StatusCards className="flex-1" />
         </div>
 
-        <div className="flex flex-col gap-3">
-          <ClimateCard />
+        <div className="flex flex-col gap-3 short:gap-2">
+          <ClimateCard className="flex-1" />
           <RobotVacuumCard />
           <AutomationPanel />
         </div>
 
-        <div className="flex flex-col gap-3 md:col-span-2 xl:col-span-1">
-          <LightingPanel />
+        <div className="flex flex-col gap-3 short:gap-2 md:col-span-2 lg:col-span-1">
+          <LightingPanel className="flex-1" />
           <MediaPanel />
         </div>
       </main>
