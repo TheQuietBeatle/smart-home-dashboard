@@ -18,14 +18,6 @@ function asNumberPercent(value: unknown, fallback: number): number {
   return Math.min(100, Math.max(0, n))
 }
 
-function findEntity(index: Map<string, HassEntity>, ids: string[]): HassEntity | null {
-  for (const id of ids) {
-    const hit = index.get(id)
-    if (hit) return hit
-  }
-  return null
-}
-
 function findEntityBy(
   index: Map<string, HassEntity>,
   domain: string,
@@ -38,15 +30,6 @@ function findEntityBy(
   }
   return null
 }
-
-const SCENE_IDS = [
-  'home',
-  'night',
-  'away',
-  'dinner',
-  'movie',
-  'sleep',
-] as const
 
 export function hydrateFromHa(
   base: SmartHomeState,
@@ -275,17 +258,10 @@ export function syncDiff(
   }
 
   if (next.vacuum.docked !== prev.vacuum.docked) {
-    const entityId = findVacuumEntity(cfg)
-    if (entityId) {
-      void callService(cfg, 'vacuum', next.vacuum.docked ? 'return_to_base' : 'start', {
-        entity_id: entityId,
-      }).catch(noop)
-    }
+    void callService(cfg, 'vacuum', next.vacuum.docked ? 'return_to_base' : 'start', {
+      entity_id: 'vacuum.roomba',
+    }).catch(noop)
   }
-}
-
-function findVacuumEntity(cfg: HassConfig): string {
-  return 'vacuum.roomba'
 }
 
 function mediaSpeakerId(source: string): string {
@@ -319,5 +295,3 @@ function toHaMode(mode: ClimateMode): string {
 }
 
 function noop(): void {}
-
-void toIds

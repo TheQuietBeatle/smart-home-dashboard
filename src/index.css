@@ -182,6 +182,31 @@
   animation: soft-pulse 2.4s ease-in-out infinite;
 }
 
+.ha-indicator {
+  position: fixed;
+  right: 10px;
+  bottom: 42px;
+  z-index: 50;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.ha-indicator[data-status='connecting'] {
+  background: #fbbf24;
+  animation: soft-pulse 1.2s ease-in-out infinite;
+}
+
+.ha-indicator[data-status='live'] {
+  background: #4ade80;
+  animation: soft-pulse 2.4s ease-in-out infinite;
+}
+
+.ha-indicator[data-status='error'] {
+  background: #f87171;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .press,
   .animate-live,
