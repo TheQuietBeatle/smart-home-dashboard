@@ -2,6 +2,7 @@ import { Camera, Car, DoorClosed, Lightbulb, Warehouse } from 'lucide-react'
 import { useSmartHome } from '../hooks/smartHomeContext'
 import type { StatusCard } from '../types'
 import { Badge, Pill } from './ui'
+import { shows, type WidgetSize } from '../widgets/types'
 
 const ICONS = {
   gate: DoorClosed,
@@ -10,8 +11,15 @@ const ICONS = {
   car: Car,
 }
 
-export function StatusCards({ className = '' }: { className?: string }) {
+export function StatusCards({
+  className = '',
+  size = 'm',
+}: {
+  className?: string
+  size?: WidgetSize
+}) {
   const { state, toggleStatus } = useSmartHome()
+  const show = (tier: WidgetSize) => shows(size, tier, 'm')
   const of = (kind: StatusCard['kind']) =>
     state.statusCards.filter((c) => c.kind === kind)
 
@@ -35,6 +43,7 @@ export function StatusCards({ className = '' }: { className?: string }) {
         })}
       </div>
 
+      {show('m') && (
       <div className="grid grid-cols-2 gap-2">
         {of('garage').map((c) => {
           const Icon = ICONS[c.icon]
@@ -63,7 +72,9 @@ export function StatusCards({ className = '' }: { className?: string }) {
           )
         })}
       </div>
+      )}
 
+      {show('w') && (
       <div className="grid min-h-24 short:min-h-12 flex-1 grid-cols-2 gap-2">
         {['Entrance', 'Courtyard'].map((name) => (
           <div
@@ -81,7 +92,9 @@ export function StatusCards({ className = '' }: { className?: string }) {
           </div>
         ))}
       </div>
+      )}
 
+      {show('l') && (
       <div className="grid grid-cols-2 gap-2">
         {of('vehicle').map((c) => {
           const Icon = ICONS[c.icon]
@@ -96,6 +109,7 @@ export function StatusCards({ className = '' }: { className?: string }) {
           )
         })}
       </div>
+      )}
     </div>
   )
 }

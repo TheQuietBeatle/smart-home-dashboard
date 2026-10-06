@@ -18,6 +18,7 @@ import { useSmartHome } from '../hooks/smartHomeContext'
 import { LIGHT_LABELS } from '../data/mockData'
 import type { DeviceId } from '../types'
 import { Chip, Pill, Section } from './ui'
+import { shows, type WidgetSize } from '../widgets/types'
 
 const BIG: DeviceId[] = ['light.table', 'light.sofa']
 const ROWS: [DeviceId, DeviceId][] = [
@@ -38,7 +39,14 @@ const ICONS: Partial<Record<DeviceId, typeof Bed>> = {
   'light.floor': LampFloor,
 }
 
-export function LightingPanel({ className = '' }: { className?: string }) {
+export function LightingPanel({
+  className = '',
+  size = 'w',
+}: {
+  className?: string
+  size?: WidgetSize
+}) {
+  const show = (tier: WidgetSize) => shows(size, tier, 'w')
   const { state, toggleLight, setBlinds } = useSmartHome()
   const open = state.lights['cover.blinds']
 
@@ -76,6 +84,7 @@ export function LightingPanel({ className = '' }: { className?: string }) {
         })}
       </div>
 
+      {show('m') && (
       <div className="grid grid-cols-2 gap-2 [&>button]:h-full [&>button]:min-h-9" style={{ flexGrow: 0.3 }}>
         {ROWS.flat().map((id) => {
           const Icon = ICONS[id] ?? Lightbulb
@@ -92,7 +101,9 @@ export function LightingPanel({ className = '' }: { className?: string }) {
           )
         })}
       </div>
+      )}
 
+      {show('w') && (
       <div
         className={`flex h-11 short:h-10 items-center gap-2 rounded-full px-2 ${
           open ? 'glass glass-blue text-fg' : 'glass text-fg'
@@ -126,6 +137,7 @@ export function LightingPanel({ className = '' }: { className?: string }) {
           <ArrowDown size={15} />
         </button>
       </div>
+      )}
     </Section>
   )
 }

@@ -14,6 +14,7 @@ import {
   Warehouse,
 } from 'lucide-react'
 import { useState } from 'react'
+import { useArrangeMode } from '../widgets/arrangeContext'
 
 const TABS = [
   { icon: House, label: 'Home' },
@@ -32,6 +33,7 @@ export function TopNav() {
   const [tab, setTab] = useState(TABS.length - 1)
   const [searchOpen, setSearchOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const { arrangeOn, toggleArrangeMode } = useArrangeMode()
 
   return (
     <header className="glass glass-bar relative z-30 flex h-11 shrink-0 items-center gap-1 px-3">
@@ -78,14 +80,22 @@ export function TopNav() {
         {[
           { icon: Search, label: 'Search', onClick: () => setSearchOpen(true) },
           { icon: MessageSquare, label: 'Assistant' },
-          { icon: Pencil, label: 'Edit dashboard' },
-        ].map(({ icon: Icon, label, onClick }) => (
+          {
+            icon: Pencil,
+            label: 'Edit dashboard',
+            onClick: toggleArrangeMode,
+            pressed: arrangeOn,
+          },
+        ].map(({ icon: Icon, label, onClick, pressed }) => (
           <button
             key={label}
             type="button"
             aria-label={label}
+            aria-pressed={pressed}
             onClick={onClick}
-            className="press grid h-8 w-8 place-items-center rounded-lg text-fg hover:bg-white/10"
+            className={`press grid h-8 w-8 place-items-center rounded-lg text-fg hover:bg-white/10 ${
+              pressed ? 'bg-tile-hi text-fg' : ''
+            }`}
           >
             <Icon size={16} />
           </button>

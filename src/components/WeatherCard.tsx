@@ -3,8 +3,16 @@ import { useSmartHome } from '../hooks/smartHomeContext'
 import { useClock } from '../hooks/useClock'
 import { num } from '../lib/format'
 import { Chip, Section } from './ui'
+import { shows, type WidgetSize } from '../widgets/types'
 
-export function WeatherCard({ className = '' }: { className?: string }) {
+export function WeatherCard({
+  className = '',
+  size = 'm',
+}: {
+  className?: string
+  size?: WidgetSize
+}) {
+  const show = (tier: WidgetSize) => shows(size, tier, 'm')
   const { state } = useSmartHome()
   const clock = useClock()
   const { weather, sensors } = state
@@ -22,12 +30,14 @@ export function WeatherCard({ className = '' }: { className?: string }) {
       title="Outdoor"
       thumb={0.62}
       chips={
+        show('m') && (
         <>
           <Chip icon={<Thermometer size={12} />}>
             {num(sensors.outdoorTemp)} °C
           </Chip>
           <Chip icon={<Droplets size={12} />}>{sensors.outdoorHumidity}%</Chip>
         </>
+        )
       }
     >
       <div className="flex items-center justify-center gap-5 py-2 short:py-0">
@@ -47,6 +57,7 @@ export function WeatherCard({ className = '' }: { className?: string }) {
         </div>
       </div>
 
+      {show('w') && (
       <ul className="flex flex-1 flex-col justify-between gap-1.5 short:gap-1" aria-label="Forecast">
         {days.map((d, i) => (
           <li key={d.day} className="flex items-center gap-2 text-[11px]">
@@ -62,7 +73,7 @@ export function WeatherCard({ className = '' }: { className?: string }) {
                   width: `${at(d.max) - at(d.min)}%`,
                 }}
               />
-              {i === 0 && (
+              {i === 0 && show('l') && (
                 <span
                   className="absolute top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-bar bg-fg"
                   style={{ left: `${at(weather.temp)}%` }}
@@ -73,6 +84,7 @@ export function WeatherCard({ className = '' }: { className?: string }) {
           </li>
         ))}
       </ul>
+      )}
     </Section>
   )
 }

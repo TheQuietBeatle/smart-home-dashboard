@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Area, AreaChart, ResponsiveContainer, YAxis } from 'recharts'
 import { useSmartHome } from '../hooks/smartHomeContext'
 import { Card, CardHeader } from './ui'
+import { shows, type WidgetSize } from '../widgets/types'
 
 const USAGE = [
   { h: 0, kw: 0.4 },
@@ -30,7 +31,8 @@ const USAGE = [
   { h: 23, kw: 0.8 },
 ]
 
-export function EnergyCard() {
+export function EnergyCard({ size = 'm' }: { size?: WidgetSize }) {
+  const show = (tier: WidgetSize) => shows(size, tier, 'm')
   const { state } = useSmartHome()
   const [nowHour] = useState(() => new Date().getHours())
   const peak = Math.max(...USAGE.map((d) => d.kw))
@@ -38,10 +40,10 @@ export function EnergyCard() {
   return (
     <Card className="flex min-h-0 flex-1 flex-col">
       <CardHeader
-        title="Consumi energetici"
+        title="Energy use"
         action={
           <span className="flex items-center gap-1 text-[10px] text-ink-500">
-            Oggi
+            Today
             <b className="font-semibold text-accent-teal tabular-nums">
               34.2 kWh
             </b>
@@ -49,20 +51,25 @@ export function EnergyCard() {
         }
       />
 
-      <div className="grid shrink-0 grid-cols-3 gap-1.5 px-3 pb-1">
+      <div
+        className={`grid shrink-0 gap-1.5 px-3 pb-1 ${
+          show('m') ? 'grid-cols-3' : 'grid-cols-1'
+        }`}
+      >
         <Metric
-          label="Adesso"
+          label="Now"
           value={`${state.sensors.energy.toFixed(1)} kW`}
           tone="cyan"
         />
-        <Metric label="Picco" value={`${peak.toFixed(1)} kW`} tone="amber" />
-        <Metric
-          label="Previsto"
-          value="€ 4,80"
-          tone="plain"
-        />
+        {show('m') && (
+          <>
+            <Metric label="Peak" value={`${peak.toFixed(1)} kW`} tone="amber" />
+            <Metric label="Forecast" value="€4.80" tone="plain" />
+          </>
+        )}
       </div>
 
+      {show('m') && (
       <div className="min-h-0 flex-1 px-1 pb-1 pt-1">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={USAGE} margin={{ top: 6, right: 4, bottom: 0, left: 4 }}>
@@ -87,7 +94,9 @@ export function EnergyCard() {
           </AreaChart>
         </ResponsiveContainer>
       </div>
+      )}
 
+      {show('w') && (
       <div className="flex shrink-0 items-center justify-between px-3 pb-2 text-[8.5px] tabular-nums text-ink-600">
         <span>00</span>
         <span>06</span>
@@ -95,6 +104,7 @@ export function EnergyCard() {
         <span>18</span>
         <span>23</span>
       </div>
+      )}
     </Card>
   )
 }

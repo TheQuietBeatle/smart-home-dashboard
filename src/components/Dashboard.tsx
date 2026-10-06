@@ -1,34 +1,57 @@
+import { lazy, Suspense } from 'react'
+import { useWidgetLayout } from '../widgets/useWidgetLayout'
+import type { WidgetRenderers } from '../widgets/types'
+import { WidgetGrid } from '../widgets/WidgetGrid'
 import { AutomationPanel } from './AutomationPanel'
 import { ClimateCard } from './ClimateCard'
 import { LightingPanel } from './LightingPanel'
 import { MediaPanel } from './MediaPanel'
-import { RobotVacuumCard } from './RobotVacuumCard'
+import { QuickPills, RobotVacuumCard } from './RobotVacuumCard'
+import { StatusBar } from './StatusBar'
 import { StatusCards } from './StatusCards'
 import { TopNav } from './TopNav'
 import { WeatherCard } from './WeatherCard'
 
+// recharts is heavy: keep it out of the main bundle.
+const EnergyCard = lazy(() =>
+  import('./EnergyCard').then((m) => ({ default: m.EnergyCard })),
+)
+
+const RENDERERS: WidgetRenderers = {
+  weather: { render: (size) => <WeatherCard size={size} className="flex-1" /> },
+  status: { render: (size) => <StatusCards size={size} className="flex-1" /> },
+  climate: { render: (size) => <ClimateCard size={size} className="flex-1" /> },
+  roomba: { render: (size) => <RobotVacuumCard size={size} /> },
+  automations: { render: (size) => <AutomationPanel size={size} /> },
+  lighting: { render: (size) => <LightingPanel size={size} className="flex-1" /> },
+  media: { render: (size) => <MediaPanel size={size} /> },
+  energy: {
+    render: (size) => (
+      <Suspense fallback={null}>
+        <EnergyCard size={size} />
+      </Suspense>
+    ),
+    fixedHeight: true,
+  },
+  pills: { render: () => <QuickPills /> },
+}
+
 export function Dashboard() {
+  const { layout } = useWidgetLayout()
+
   return (
     <div className="flex h-screen flex-col overflow-hidden">
       <TopNav />
 
-      <main className="scroll-thin grid min-h-0 flex-1 grid-cols-1 gap-x-4 gap-y-4 overflow-y-auto p-4 short:gap-y-2 short:p-3 md:grid-cols-2 lg:grid-cols-[1fr_1.15fr_1.1fr] lg:grid-rows-[minmax(min-content,1fr)]">
-        <div className="flex flex-col gap-3 short:gap-2">
-          <WeatherCard className="shrink-0" />
-          <StatusCards className="flex-1" />
-        </div>
-
-        <div className="flex flex-col gap-3 short:gap-2">
-          <ClimateCard className="flex-1" />
-          <RobotVacuumCard />
-          <AutomationPanel />
-        </div>
-
-        <div className="flex flex-col gap-3 short:gap-2 md:col-span-2 lg:col-span-1">
-          <LightingPanel className="flex-1" />
-          <MediaPanel />
-        </div>
+      <main className="scroll-thin min-h-0 flex-1 overflow-y-auto">
+        <WidgetGrid
+          layout={layout}
+          renderers={RENDERERS}
+          containerClassName="grid-cols-12 gap-2 p-2 short:gap-1"
+        />
       </main>
+
+      <StatusBar />
     </div>
   )
 }

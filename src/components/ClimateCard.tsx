@@ -17,6 +17,7 @@ import { APPLIANCES } from '../data/mockData'
 import { num } from '../lib/format'
 import type { ClimateMode } from '../types'
 import { Badge, Chip, RoundBtn, Section } from './ui'
+import { shows, type WidgetSize } from '../widgets/types'
 
 const MIN = 16
 const MAX = 30
@@ -44,7 +45,14 @@ function arc(from: number, to: number) {
   return `M ${a.x} ${a.y} A ${R} ${R} 0 ${large} 1 ${b.x} ${b.y}`
 }
 
-export function ClimateCard({ className = '' }: { className?: string }) {
+export function ClimateCard({
+  className = '',
+  size = 'l',
+}: {
+  className?: string
+  size?: WidgetSize
+}) {
+  const show = (tier: WidgetSize) => shows(size, tier, 'l')
   const { state, setTemp, setClimateMode, toggleClimatePower } = useSmartHome()
   const { climate, sensors } = state
   const ratio = (climate.targetTemp - MIN) / (MAX - MIN)
@@ -66,7 +74,13 @@ export function ClimateCard({ className = '' }: { className?: string }) {
         </>
       }
     >
-      <div className="relative min-h-[210px] flex-1 short:min-h-[120px]">
+      <div
+        className={`relative flex-1 ${
+          show('l')
+            ? 'min-h-[210px] short:min-h-[120px]'
+            : 'min-h-[150px] short:min-h-[110px]'
+        }`}
+      >
         <h3 className="absolute left-1/2 top-0 -translate-x-1/2 text-[13px] text-fg">
           Air Conditioner
         </h3>
@@ -118,6 +132,7 @@ export function ClimateCard({ className = '' }: { className?: string }) {
         </div>
       </div>
 
+      {show('m') && (
       <div className="flex items-center justify-between gap-1.5 px-1">
         {MODES.map(({ id, icon: Icon, label }) => (
           <RoundBtn
@@ -139,7 +154,9 @@ export function ClimateCard({ className = '' }: { className?: string }) {
           <Power size={16} />
         </RoundBtn>
       </div>
+      )}
 
+      {show('w') && (
       <div className="grid grid-cols-2 gap-2">
         {APPLIANCES.map((a) => (
           <div
@@ -159,6 +176,7 @@ export function ClimateCard({ className = '' }: { className?: string }) {
           </div>
         ))}
       </div>
+      )}
     </Section>
   )
 }

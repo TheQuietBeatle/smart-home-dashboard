@@ -17,6 +17,7 @@ import { useSmartHome } from '../hooks/smartHomeContext'
 import type { MediaSource } from '../types'
 import { Chip, RoundBtn, Section } from './ui'
 import { Pill } from './ui'
+import { shows, type WidgetSize } from '../widgets/types'
 
 const SOURCES: { id: MediaSource; label: string; icon: typeof Tv }[] = [
   { id: 'tv', label: 'TV', icon: Tv },
@@ -25,7 +26,8 @@ const SOURCES: { id: MediaSource; label: string; icon: typeof Tv }[] = [
   { id: 'usb', label: 'USB', icon: Usb },
 ]
 
-export function MediaPanel() {
+export function MediaPanel({ size = 'w' }: { size?: WidgetSize }) {
+  const show = (tier: WidgetSize) => shows(size, tier, 'w')
   const { state, setSource, togglePlay, next, previous, setVolume, toggleEcho } =
     useSmartHome()
   const { media } = state
@@ -38,6 +40,7 @@ export function MediaPanel() {
       thumb={0.45}
       chips={<Chip icon={<Cast size={12} />} />}
     >
+      {show('m') && (
       <div className="grid grid-cols-4 gap-2">
         {SOURCES.map(({ id, label, icon: Icon }) => (
           <Pill
@@ -51,6 +54,7 @@ export function MediaPanel() {
           </Pill>
         ))}
       </div>
+      )}
 
       <div className="flex h-11 short:h-10 items-center gap-1.5 glass rounded-full px-1.5">
         <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-green text-bg">
@@ -59,9 +63,11 @@ export function MediaPanel() {
         <span className="min-w-0 flex-1 truncate text-[13px] font-medium">
           Spotify
         </span>
+        {show('l') && (
         <button type="button" aria-label="Shuffle" className="press grid h-8 w-8 place-items-center rounded-full text-fg-dim hover:text-fg">
           <Shuffle size={14} />
         </button>
+        )}
         <button type="button" aria-label="Previous" onClick={previous} className="press grid h-8 w-8 place-items-center rounded-full hover:bg-white/10">
           <SkipBack size={14} />
         </button>
@@ -81,6 +87,7 @@ export function MediaPanel() {
         </button>
       </div>
 
+      {show('w') && (
       <div className="flex h-11 short:h-10 items-center gap-1.5 glass rounded-full px-1.5">
         <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-[#e5484d] to-[#a3262b] text-fg">
           <Speaker size={15} />
@@ -101,6 +108,7 @@ export function MediaPanel() {
           {media.echoPlaying ? <Pause size={15} /> : <Play size={15} />}
         </RoundBtn>
       </div>
+      )}
     </Section>
   )
 }
