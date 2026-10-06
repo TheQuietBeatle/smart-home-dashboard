@@ -1,151 +1,136 @@
-import {
-  Cast,
-  Disc3,
-  Monitor,
-  Pause,
-  Play,
-  Shuffle,
-  SkipBack,
-  SkipForward,
-  Speaker,
-  Tv,
-  Usb,
-  Volume2,
-  VolumeX,
-} from 'lucide-react'
-import { useSmartHome } from '../../hooks/smartHomeContext'
-import type { MediaSource } from '../../types'
-import { Pill, RoundBtn, Section } from '../ui'
-import { shows, TOUCH, type WidgetSize } from '../../widgets/types'
+import { Music2, Pause, Play } from 'lucide-react'
+import { useState } from 'react'
+import { useMediaPlayer } from '../../hooks/useMediaPlayer'
+import { AlbumArt, NowPlayingPage } from '../NowPlayingPage'
+import { Section } from '../ui'
+import { TOUCH, type WidgetSize } from '../../widgets/types'
 
-const SOURCES: { id: MediaSource; label: string; icon: typeof Tv }[] = [
-  { id: 'tv', label: 'TV', icon: Tv },
-  { id: 'pc', label: 'PC', icon: Monitor },
-  { id: 'mix', label: 'Mix', icon: Shuffle },
-  { id: 'usb', label: 'USB', icon: Usb },
-]
+/** Compact Now Playing widget; tapping it opens the full-screen page. */
+export function NowPlayingCard({ size = 'w' }: { size?: WidgetSize }) {
+  const player = useMediaPlayer()
+  const [open, setOpen] = useState(false)
+  const { active, status } = player
+  const tall = size === 'l'
+  const progress =
+    active && player.duration > 0 ? player.position / player.duration : 0
 
-export function MediaPanel({ size = 'w' }: { size?: WidgetSize }) {
-  const { state, setSource, togglePlay, next, previous, setVolume, toggleEcho } =
-    useSmartHome()
-  const { media } = state
-  const muted = media.volume === 0
-  const show = (tier: WidgetSize) => shows(size, tier, 'w')
-  // Only the 6-column cell is wide enough for the strip on one line.
-  const oneRow = size === 'w'
-  const narrow = size === 's' || size === 'l'
+  const title =
+    status === 'unavailable'
+      ? 'Unavailable'
+      : status === 'idle'
+        ? 'Nothing playing'
+        : player.title || 'Unknown title'
+  const subtitle =
+    status === 'unavailable'
+      ? 'Player offline'
+      : status === 'idle'
+        ? 'Tap to open'
+        : player.artist
 
-  const label = (
-    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-green text-bg">
-      <Disc3 size={18} />
-    </span>
-  )
-  const shuffle = show('l') && (
-    <button type="button" aria-label="Shuffle" className={`${TOUCH.icon} text-fg-dim hover:text-fg`}>
-      <Shuffle size={18} />
-    </button>
-  )
-  const transport = (
-    <>
-      <button type="button" aria-label="Previous" onClick={previous} className={`${TOUCH.icon} hover:bg-white/10`}>
-        <SkipBack size={18} />
-      </button>
-      <button type="button" aria-label={media.playing ? 'Pause' : 'Play'} onClick={togglePlay} className={`${TOUCH.icon} hover:bg-white/10`}>
-        {media.playing ? <Pause size={20} /> : <Play size={20} />}
-      </button>
-      <button type="button" aria-label="Next" onClick={next} className={`${TOUCH.icon} hover:bg-white/10`}>
-        <SkipForward size={18} />
-      </button>
-    </>
-  )
-  const volume = (
+  const artSize =
+    size === 'l'
+      ? 'aspect-square w-full max-h-[240px] self-center'
+      : size === 'w'
+        ? 'h-32 w-32'
+        : size === 'm'
+          ? 'h-24 w-24'
+          : 'h-16 w-16'
+
+  const art = (
     <button
       type="button"
-      aria-label={muted ? 'Unmute' : 'Mute'}
-      onClick={() => setVolume(muted ? 42 : 0)}
-      className={`${TOUCH.icon} rounded-xl bg-amber text-bg`}
+      aria-label="Open Now Playing"
+      onClick={() => setOpen(true)}
+      className={`press relative shrink-0 overflow-hidden rounded-xl bg-white/5 ${artSize}`}
     >
-      {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+      <AlbumArt
+        src={active ? player.art : null}
+        alt=""
+        iconSize={tall ? 48 : 24}
+        className="h-full w-full"
+      />
+    </button>
+  )
+
+  const text = (
+    <div
+      onClick={() => setOpen(true)}
+      className="min-w-0 flex-1 cursor-pointer leading-tight"
+    >
+      <div className="line-clamp-2 break-words text-[17px] font-semibold text-fg">
+        {title}
+      </div>
+      {subtitle && (
+        <div className="mt-1 truncate text-[15px] text-fg-dim">{subtitle}</div>
+      )}
+    </div>
+  )
+
+  const playPause = (
+    <button
+      type="button"
+      aria-label={player.playing ? 'Pause' : 'Play'}
+      disabled={!active}
+      onClick={player.playPause}
+      className="press grid h-14 w-14 shrink-0 place-items-center rounded-full bg-fg text-bg disabled:opacity-35"
+    >
+      {player.playing ? (
+        <Pause size={24} fill="currentColor" />
+      ) : (
+        <Play size={24} fill="currentColor" className="translate-x-0.5" />
+      )}
     </button>
   )
 
   return (
-    <Section
-      className={TOUCH.section}
-      icon={<Disc3 size={16} />}
-      title="Media"
-      thumb={0.45}
-      chips={
-        <span className={TOUCH.chip}>
-          <Cast size={14} />
-        </span>
-      }
-    >
-      {show('m') && (
-        <div className={`grid gap-1.5 ${narrow ? 'grid-cols-2' : 'grid-cols-4'}`}>
-          {SOURCES.map(({ id, label: name }) => (
-            <Pill
-              key={id}
-              active={media.source === id}
-              onClick={() => setSource(id)}
-              className={`${TOUCH.pill} justify-center px-2! [&>span]:flex-none`}
-            >
-              {name}
-            </Pill>
-          ))}
-        </div>
-      )}
-
-      {oneRow ? (
-        <div className="glass flex h-12 shrink-0 items-center gap-1 rounded-full pl-2">
-          {label}
-          <span className="min-w-0 flex-1 truncate pl-1 text-[15px] font-medium">
-            Spotify
-          </span>
-          {shuffle}
-          {transport}
-          {volume}
-        </div>
-      ) : (
-        <div className="glass shrink-0 rounded-[24px]">
-          <div className="flex h-12 items-center gap-1 pl-2">
-            {label}
-            <span className="min-w-0 flex-1 truncate pl-1 text-[15px] font-medium">
-              Spotify
-            </span>
-            {shuffle}
-            {volume}
-          </div>
-          <div className="flex h-12 items-center justify-center gap-1">
-            {transport}
-          </div>
-        </div>
-      )}
-
-      {show('w') && (
-        <div className="glass flex h-12 shrink-0 items-center gap-1 rounded-full pl-2">
-          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-[#e5484d] to-[#a3262b] text-fg">
-            <Speaker size={16} />
-          </span>
-          <span className="min-w-0 flex-1 truncate pl-1 text-[15px] font-medium">
-            Echo Show 5
-          </span>
-          {!narrow && (
-            <button type="button" aria-label="Cast" className={`${TOUCH.icon} text-fg-dim hover:text-fg`}>
-              <Cast size={18} />
-            </button>
+    <>
+      <Section
+        className={`${TOUCH.section} flex-1`}
+        icon={<Music2 size={16} />}
+        title="Now Playing"
+        thumb={0.45}
+      >
+        <div
+          className={`flex min-h-0 flex-1 flex-col justify-center gap-3 ${
+            status === 'unavailable' ? 'opacity-60' : ''
+          }`}
+        >
+          {tall ? (
+            <>
+              {art}
+              <div className="flex items-center gap-3">
+                {text}
+                {playPause}
+              </div>
+            </>
+          ) : size === 's' ? (
+            <>
+              <div className="flex items-center gap-3">
+                {art}
+                {text}
+              </div>
+              {playPause}
+            </>
+          ) : (
+            <div className="flex items-center gap-3">
+              {art}
+              {text}
+              {playPause}
+            </div>
           )}
-          <RoundBtn
-            aria-label={media.echoPlaying ? 'Pause Echo' : 'Play Echo'}
-            active={media.echoPlaying}
-            tone="amber"
-            className={TOUCH.round}
-            onClick={toggleEcho}
-          >
-            {media.echoPlaying ? <Pause size={18} /> : <Play size={18} />}
-          </RoundBtn>
+
+          {size !== 's' && (
+            <div aria-hidden className="h-1 shrink-0 overflow-hidden rounded-full bg-white/15">
+              <div
+                className="h-full rounded-full bg-fg"
+                style={{ width: `${progress * 100}%` }}
+              />
+            </div>
+          )}
         </div>
-      )}
-    </Section>
+      </Section>
+
+      {open && <NowPlayingPage player={player} onClose={() => setOpen(false)} />}
+    </>
   )
 }

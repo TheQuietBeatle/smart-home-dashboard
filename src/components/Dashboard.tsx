@@ -8,7 +8,7 @@ import { ClockCard } from './cards/10.clock'
 import { AutomationPanel } from './cards/5.automations'
 import { ClimateCard } from './cards/3.climate'
 import { LightingPanel } from './cards/6.lighting'
-import { MediaPanel } from './cards/7.media'
+import { NowPlayingCard } from './cards/7.media'
 import { QuickPills } from './cards/9.pills'
 import { RobotVacuumCard } from './cards/4.roomba'
 import { StatusBar } from './StatusBar'
@@ -29,7 +29,7 @@ const RENDERERS: WidgetRenderers = {
   roomba: { render: (size) => <RobotVacuumCard size={size} /> },
   automations: { render: (size) => <AutomationPanel size={size} /> },
   lighting: { render: (size) => <LightingPanel size={size} className="flex-1" /> },
-  media: { render: (size) => <MediaPanel size={size} /> },
+  media: { render: (size) => <NowPlayingCard size={size} /> },
   energy: {
     render: (size) => (
       <Suspense fallback={null}>

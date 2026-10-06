@@ -3,9 +3,9 @@ import {
   Bot,
   Clock,
   CloudSun,
-  Disc3,
   Lightbulb,
   ListFilter,
+  Music2,
   ShieldCheck,
   Sparkles,
   Thermometer,
@@ -88,9 +88,9 @@ export const WIDGET_META: Record<WidgetId, WidgetMeta> = {
     icon: Lightbulb,
   },
   media: {
-    name: 'Media',
-    description: 'Sources, Spotify and Echo playback',
-    icon: Disc3,
+    name: 'Now Playing',
+    description: 'Track, artist and playback controls',
+    icon: Music2,
   },
   automations: {
     name: 'Automations',
