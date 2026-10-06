@@ -2,12 +2,7 @@ import { Check, RotateCcw } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useArrangeMode } from './arrangeContext'
 import { pageOf, paginate, PAGE_ROWS } from './paginate'
-import {
-  SIZE_SPAN,
-  type WidgetId,
-  type WidgetLayout,
-  type WidgetRenderers,
-} from './types'
+import { SIZE_SPAN, type WidgetLayout, type WidgetRenderers } from './types'
 import { useMediaQuery } from './useMediaQuery'
 import { useWidgetLayout } from './useWidgetLayout'
 import { WidgetFrame } from './WidgetFrame'
@@ -31,13 +26,14 @@ export function WidgetGrid({
   renderers,
   containerClassName = '',
 }: WidgetGridProps) {
-  const { move, moveTo, cycleSize, resetLayout } = useWidgetLayout()
-  const { arrangeOn, toggleArrangeMode } = useArrangeMode()
+  const { move, moveTo, cycleSize, remove, resetLayout } = useWidgetLayout()
+  const { arrangeOn, toggleArrangeMode, catalogOpen, followRef } = useArrangeMode()
+  // Removed widgets keep their entry (and size) but take no space.
+  const visible = useMemo(() => layout.filter((w) => !w.hidden), [layout])
   const paged = useMediaQuery(PAGED_QUERY)
-  const pages = useMemo(() => paginate(layout), [layout])
+  const pages = useMemo(() => paginate(visible), [visible])
   const scroller = useRef<HTMLDivElement>(null)
   const [page, setPage] = useState(0)
-  const followId = useRef<WidgetId | null>(null)
   const current = Math.min(page, Math.max(pages.length - 1, 0))
 
   const goTo = (index: number) => {
@@ -51,17 +47,23 @@ export function WidgetGrid({
   }
 
   // After a move or resize, bring the moved widget's page into view.
+  // After a move, resize or add, bring that widget's page into view.
   useEffect(() => {
-    const id = followId.current
-    followId.current = null
+    const id = followRef.current
+    followRef.current = null
     if (!id || !paged) return
     const target = pageOf(pages, id)
     if (target >= 0 && target !== current) goTo(target)
-  }, [pages, paged, current])
+  }, [pages, paged, current, followRef])
+
+  // A removal can leave the view past the last page: snap back to it.
+  useEffect(() => {
+    if (paged && pages.length > 0 && page > pages.length - 1) goTo(pages.length - 1)
+  }, [paged, page, pages.length])
 
   // Arrow keys page too, for a mouse or keyboard.
   useEffect(() => {
-    if (!paged) return
+    if (!paged || catalogOpen) return
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement | null
       if (t?.closest('input, textarea, select, [contenteditable="true"]')) return
@@ -70,10 +72,10 @@ export function WidgetGrid({
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [paged, current, pages.length])
+  }, [paged, catalogOpen, current, pages.length])
 
   const frame = (w: WidgetLayout, placement?: { col: number; row: number }) => {
-    const i = layout.indexOf(w)
+    const i = visible.indexOf(w)
     const renderer = renderers[w.id]
     return (
       <WidgetFrame
@@ -89,16 +91,17 @@ export function WidgetGrid({
           }
         }
         isFirst={i === 0}
-        isLast={i === layout.length - 1}
+        isLast={i === visible.length - 1}
         onMove={(dir) => {
-          followId.current = w.id
+          followRef.current = w.id
           move(w.id, dir)
         }}
         onCycleSize={() => {
-          followId.current = w.id
+          followRef.current = w.id
           cycleSize(w.id)
         }}
         onDragOver={(target) => moveTo(w.id, target)}
+        onRemove={() => remove(w.id)}
       >
         {renderer.render(w.size)}
       </WidgetFrame>
@@ -135,7 +138,7 @@ export function WidgetGrid({
         <div
           className={`grid grid-cols-12 gap-2 p-2 [grid-auto-flow:row_dense] ${containerClassName}`}
         >
-          {layout.map((w) => frame(w))}
+          {visible.map((w) => frame(w))}
         </div>
         {arrangeBar}
       </>

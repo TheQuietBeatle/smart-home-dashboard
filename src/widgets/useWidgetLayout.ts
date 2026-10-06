@@ -23,6 +23,8 @@ function mergeWithDefaults(saved: unknown): readonly WidgetLayout[] {
       size: SIZE_ORDER.includes(entry?.size as WidgetSize)
         ? (entry?.size as WidgetSize)
         : fallback.size,
+      // Removed widgets must stay removed across reloads.
+      ...(entry?.hidden === true && { hidden: true }),
     })
   }
   for (const w of DEFAULT_LAYOUT) if (!seen.has(w.id)) out.push(w)
@@ -60,10 +62,14 @@ function subscribe(listener: () => void) {
   }
 }
 
+/** Swaps with the nearest visible neighbour, so hidden entries never absorb a move. */
 function move(id: WidgetId, dir: 'left' | 'right') {
   const i = current.findIndex((w) => w.id === id)
-  const j = dir === 'left' ? i - 1 : i + 1
-  if (i < 0 || j < 0 || j >= current.length) return
+  if (i < 0) return
+  const step = dir === 'left' ? -1 : 1
+  let j = i + step
+  while (j >= 0 && j < current.length && current[j].hidden) j += step
+  if (j < 0 || j >= current.length) return
   const next = [...current]
   ;[next[i], next[j]] = [next[j], next[i]]
   commit(next)
@@ -92,6 +98,18 @@ function cycleSize(id: WidgetId) {
   )
 }
 
+function remove(id: WidgetId) {
+  commit(current.map((w) => (w.id === id ? { ...w, hidden: true } : w)))
+}
+
+/** Shows the widget again with its stored size, at the end of the order. */
+function add(id: WidgetId) {
+  const entry = current.find((w) => w.id === id)
+  if (!entry) return
+  commit([...current.filter((w) => w.id !== id), { ...entry, hidden: false }])
+}
+
+/** Restores the default order and sizes, and un-hides everything. */
 function resetLayout() {
   commit(DEFAULT_LAYOUT)
 }
@@ -102,5 +120,5 @@ export function useWidgetLayout() {
     () => current,
     () => DEFAULT_LAYOUT,
   )
-  return { layout, move, moveTo, cycleSize, resetLayout }
+  return { layout, move, moveTo, cycleSize, remove, add, resetLayout }
 }

@@ -7,6 +7,7 @@ import {
   Menu,
   MessageSquare,
   Pencil,
+  Plus,
   Search,
   Server,
   Tv,
@@ -33,7 +34,7 @@ export function TopNav() {
   const [tab, setTab] = useState(TABS.length - 1)
   const [searchOpen, setSearchOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const { arrangeOn, toggleArrangeMode } = useArrangeMode()
+  const { arrangeOn, toggleArrangeMode, openCatalog } = useArrangeMode()
 
   return (
     <header className="glass glass-bar relative z-30 flex h-12 shrink-0 items-center gap-0.5 px-1">
@@ -86,6 +87,7 @@ export function TopNav() {
             onClick: toggleArrangeMode,
             pressed: arrangeOn,
           },
+          { icon: Plus, label: 'Add widgets', onClick: openCatalog },
         ].map(({ icon: Icon, label, onClick, pressed }) => (
           <button
             key={label}

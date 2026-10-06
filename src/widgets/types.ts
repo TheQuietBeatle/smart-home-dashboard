@@ -1,3 +1,15 @@
+import {
+  Activity,
+  Bot,
+  CloudSun,
+  Disc3,
+  Lightbulb,
+  ListFilter,
+  ShieldCheck,
+  Sparkles,
+  Thermometer,
+  type LucideIcon,
+} from 'lucide-react'
 import type { ReactNode } from 'react'
 
 export type WidgetId =
@@ -17,6 +29,8 @@ export type WidgetSize = 's' | 'm' | 'w' | 'l'
 export interface WidgetLayout {
   id: WidgetId
   size: WidgetSize
+  /** Removed from the dashboard; kept so its size and the order survive. */
+  hidden?: boolean
 }
 
 export interface WidgetRenderer {
@@ -43,16 +57,59 @@ export const SIZE_LABEL: Record<WidgetSize, string> = {
   l: 'Large',
 }
 
-export const WIDGET_LABEL: Record<WidgetId, string> = {
-  weather: 'Weather',
-  status: 'Status',
-  climate: 'Climate',
-  roomba: 'Roomba',
-  automations: 'Automations',
-  lighting: 'Lighting',
-  media: 'Media',
-  energy: 'Energy',
-  pills: 'Quick filters',
+export interface WidgetMeta {
+  name: string
+  description: string
+  icon: LucideIcon
+}
+
+/** Display name, one-line description and icon for every widget. */
+export const WIDGET_META: Record<WidgetId, WidgetMeta> = {
+  weather: {
+    name: 'Weather',
+    description: 'Outdoor temp, clock and forecast',
+    icon: CloudSun,
+  },
+  status: {
+    name: 'Status',
+    description: 'Gate, garages, cameras and cars',
+    icon: ShieldCheck,
+  },
+  climate: {
+    name: 'Climate',
+    description: 'Air conditioner setpoint and modes',
+    icon: Thermometer,
+  },
+  lighting: {
+    name: 'Lighting',
+    description: 'Lights on/off and blinds',
+    icon: Lightbulb,
+  },
+  media: {
+    name: 'Media',
+    description: 'Sources, Spotify and Echo playback',
+    icon: Disc3,
+  },
+  automations: {
+    name: 'Automations',
+    description: 'One-tap scenes like Night and Dinner',
+    icon: Sparkles,
+  },
+  roomba: {
+    name: 'Roomba',
+    description: 'Vacuum status, battery and controls',
+    icon: Bot,
+  },
+  energy: {
+    name: 'Energy',
+    description: "Power now, peak and today's usage",
+    icon: Activity,
+  },
+  pills: {
+    name: 'Quick filters',
+    description: 'Shortcut chips for device groups',
+    icon: ListFilter,
+  },
 }
 
 // Ordered so the first page holds the four main panels side by side and the

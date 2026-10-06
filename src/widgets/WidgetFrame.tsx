@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, GripVertical } from 'lucide-react'
+import { ChevronLeft, ChevronRight, GripVertical, X } from 'lucide-react'
 import {
   useRef,
   useState,
@@ -9,7 +9,7 @@ import {
 import {
   SIZE_LABEL,
   SIZE_SPAN,
-  WIDGET_LABEL,
+  WIDGET_META,
   type WidgetId,
   type WidgetSize,
 } from './types'
@@ -26,6 +26,7 @@ interface WidgetFrameProps {
   onMove: (dir: 'left' | 'right') => void
   onCycleSize: () => void
   onDragOver: (targetId: WidgetId) => void
+  onRemove: () => void
   children: ReactNode
 }
 
@@ -43,9 +44,11 @@ export function WidgetFrame({
   onMove,
   onCycleSize,
   onDragOver,
+  onRemove,
   children,
 }: WidgetFrameProps) {
   const span = SIZE_SPAN[size]
+  const name = WIDGET_META[id].name
   const [dragging, setDragging] = useState(false)
   const lastTarget = useRef<WidgetId | null>(null)
 
@@ -108,14 +111,24 @@ export function WidgetFrame({
             aria-hidden
             className="absolute inset-0 z-10 rounded-2xl bg-bg/35"
           />
+          {/* Top-right corner: remove on its own, the toolbar right below it,
+              so neither covers the drag handle even in a 3-column cell. */}
+          <button
+            type="button"
+            aria-label={`Remove ${name}`}
+            onClick={onRemove}
+            className="press glass glass-amber absolute right-0 top-0 z-20 grid h-12 w-12 place-items-center rounded-full text-bg"
+          >
+            <X size={20} strokeWidth={2.4} />
+          </button>
           <div
             role="toolbar"
-            aria-label={`Arrange ${WIDGET_LABEL[id]}`}
-            className="glass absolute right-0 top-0 z-20 flex items-center rounded-full"
+            aria-label={`Arrange ${name}`}
+            className="glass absolute right-0 top-[52px] z-20 flex items-center rounded-full"
           >
             <button
               type="button"
-              aria-label={`Drag ${WIDGET_LABEL[id]}`}
+              aria-label={`Drag ${name}`}
               className={`${TOOL} cursor-grab touch-none active:cursor-grabbing`}
               onPointerDown={onPointerDown}
               onPointerMove={onPointerMove}
@@ -126,7 +139,7 @@ export function WidgetFrame({
             </button>
             <button
               type="button"
-              aria-label={`Move ${WIDGET_LABEL[id]} left`}
+              aria-label={`Move ${name} left`}
               disabled={isFirst}
               onClick={() => onMove('left')}
               className={TOOL}
@@ -135,7 +148,7 @@ export function WidgetFrame({
             </button>
             <button
               type="button"
-              aria-label={`${WIDGET_LABEL[id]} size: ${SIZE_LABEL[size]}. Change size`}
+              aria-label={`${name} size: ${SIZE_LABEL[size]}. Change size`}
               onClick={onCycleSize}
               className={`${TOOL} text-[15px] font-bold uppercase`}
             >
@@ -143,7 +156,7 @@ export function WidgetFrame({
             </button>
             <button
               type="button"
-              aria-label={`Move ${WIDGET_LABEL[id]} right`}
+              aria-label={`Move ${name} right`}
               disabled={isLast}
               onClick={() => onMove('right')}
               className={TOOL}
