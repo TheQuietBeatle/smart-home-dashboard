@@ -14,11 +14,11 @@ import {
   Blinds,
   Car,
 } from 'lucide-react'
-import { useSmartHome } from '../hooks/smartHomeContext'
-import { LIGHT_LABELS } from '../data/mockData'
-import type { DeviceId } from '../types'
-import { Pill, Section } from './ui'
-import { shows, TOUCH, type WidgetSize } from '../widgets/types'
+import { useSmartHome } from '../../hooks/smartHomeContext'
+import { LIGHT_LABELS } from '../../data/mockData'
+import type { DeviceId } from '../../types'
+import { Pill, Section } from '../ui'
+import { shows, TOUCH, type WidgetSize } from '../../widgets/types'
 
 const BIG: DeviceId[] = ['light.table', 'light.sofa']
 const ROWS: [DeviceId, DeviceId][] = [

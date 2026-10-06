@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 export interface Clock {
+  now: Date
   time: string
   date: string
   shortDate: string
@@ -33,6 +34,7 @@ export function useClock(): Clock {
   const pad = (n: number) => String(n).padStart(2, '0')
 
   return {
+    now,
     time: `${pad(now.getHours())}:${pad(now.getMinutes())}`,
     date: `${DAYS[now.getDay()]}, ${pad(now.getDate())}.${
       pad(now.getMonth() + 1)

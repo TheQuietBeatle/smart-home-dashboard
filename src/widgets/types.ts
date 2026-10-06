@@ -1,6 +1,7 @@
 import {
   Activity,
   Bot,
+  Clock,
   CloudSun,
   Disc3,
   Lightbulb,
@@ -22,6 +23,7 @@ export type WidgetId =
   | 'media'
   | 'energy'
   | 'pills'
+  | 'clock'
 
 /** s = 3x1, m = 4x1, w = 6x1, l = 3x2 on a 12-column grid. */
 export type WidgetSize = 's' | 'm' | 'w' | 'l'
@@ -110,6 +112,11 @@ export const WIDGET_META: Record<WidgetId, WidgetMeta> = {
     description: 'Shortcut chips for device groups',
     icon: ListFilter,
   },
+  clock: {
+    name: 'Clock',
+    description: 'Analog clock with a second hand',
+    icon: Clock,
+  },
 }
 
 // Ordered so the first page holds the four main panels side by side and the
@@ -124,6 +131,7 @@ export const DEFAULT_LAYOUT: readonly WidgetLayout[] = [
   { id: 'roomba', size: 'm' },
   { id: 'energy', size: 'm' },
   { id: 'pills', size: 's' },
+  { id: 'clock', size: 'l' },
 ]
 
 /**

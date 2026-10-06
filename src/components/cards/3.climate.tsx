@@ -11,12 +11,12 @@ import {
   Sparkles,
   Thermometer,
 } from 'lucide-react'
-import { useSmartHome } from '../hooks/smartHomeContext'
-import { APPLIANCES } from '../data/mockData'
-import { num } from '../lib/format'
-import type { ClimateMode } from '../types'
-import { Badge, RoundBtn, Section } from './ui'
-import { shows, TOUCH, type WidgetSize } from '../widgets/types'
+import { useSmartHome } from '../../hooks/smartHomeContext'
+import { APPLIANCES } from '../../data/mockData'
+import { num } from '../../lib/format'
+import type { ClimateMode } from '../../types'
+import { Badge, RoundBtn, Section } from '../ui'
+import { shows, TOUCH, type WidgetSize } from '../../widgets/types'
 
 const MIN = 16
 const MAX = 30

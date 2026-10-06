@@ -13,10 +13,10 @@ import {
   Volume2,
   VolumeX,
 } from 'lucide-react'
-import { useSmartHome } from '../hooks/smartHomeContext'
-import type { MediaSource } from '../types'
-import { Pill, RoundBtn, Section } from './ui'
-import { shows, TOUCH, type WidgetSize } from '../widgets/types'
+import { useSmartHome } from '../../hooks/smartHomeContext'
+import type { MediaSource } from '../../types'
+import { Pill, RoundBtn, Section } from '../ui'
+import { shows, TOUCH, type WidgetSize } from '../../widgets/types'
 
 const SOURCES: { id: MediaSource; label: string; icon: typeof Tv }[] = [
   { id: 'tv', label: 'TV', icon: Tv },

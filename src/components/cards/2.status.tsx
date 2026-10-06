@@ -1,8 +1,8 @@
 import { Camera, Car, DoorClosed, Lightbulb, Warehouse } from 'lucide-react'
-import { useSmartHome } from '../hooks/smartHomeContext'
-import type { StatusCard } from '../types'
-import { Badge, Pill } from './ui'
-import { shows, TOUCH, type WidgetSize } from '../widgets/types'
+import { useSmartHome } from '../../hooks/smartHomeContext'
+import type { StatusCard } from '../../types'
+import { Badge, Pill } from '../ui'
+import { shows, TOUCH, type WidgetSize } from '../../widgets/types'
 
 const ICONS = {
   gate: DoorClosed,

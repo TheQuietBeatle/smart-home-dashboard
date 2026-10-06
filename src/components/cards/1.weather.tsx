@@ -1,9 +1,9 @@
 import { Droplets, House, Moon, Sun, Thermometer } from 'lucide-react'
-import { useSmartHome } from '../hooks/smartHomeContext'
-import { useClock } from '../hooks/useClock'
-import { num } from '../lib/format'
-import { Section } from './ui'
-import { shows, TOUCH, type WidgetSize } from '../widgets/types'
+import { useSmartHome } from '../../hooks/smartHomeContext'
+import { useClock } from '../../hooks/useClock'
+import { num } from '../../lib/format'
+import { Section } from '../ui'
+import { shows, TOUCH, type WidgetSize } from '../../widgets/types'
 
 export function WeatherCard({
   className = '',

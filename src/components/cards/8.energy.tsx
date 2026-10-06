@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { Area, AreaChart, ResponsiveContainer, YAxis } from 'recharts'
 import { Activity } from 'lucide-react'
-import { useSmartHome } from '../hooks/smartHomeContext'
-import { num } from '../lib/format'
-import { Section } from './ui'
-import { shows, TOUCH, type WidgetSize } from '../widgets/types'
+import { useSmartHome } from '../../hooks/smartHomeContext'
+import { num } from '../../lib/format'
+import { Section } from '../ui'
+import { shows, TOUCH, type WidgetSize } from '../../widgets/types'
 
 const USAGE = [
   { h: 0, kw: 0.4 },

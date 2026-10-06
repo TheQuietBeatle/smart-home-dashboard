@@ -4,20 +4,22 @@ import { useArrangeMode } from '../widgets/arrangeContext'
 import { useWidgetLayout } from '../widgets/useWidgetLayout'
 import type { WidgetRenderers } from '../widgets/types'
 import { WidgetGrid } from '../widgets/WidgetGrid'
-import { AutomationPanel } from './AutomationPanel'
-import { ClimateCard } from './ClimateCard'
-import { LightingPanel } from './LightingPanel'
-import { MediaPanel } from './MediaPanel'
-import { QuickPills, RobotVacuumCard } from './RobotVacuumCard'
+import { ClockCard } from './cards/10.clock'
+import { AutomationPanel } from './cards/5.automations'
+import { ClimateCard } from './cards/3.climate'
+import { LightingPanel } from './cards/6.lighting'
+import { MediaPanel } from './cards/7.media'
+import { QuickPills } from './cards/9.pills'
+import { RobotVacuumCard } from './cards/4.roomba'
 import { StatusBar } from './StatusBar'
-import { StatusCards } from './StatusCards'
+import { StatusCards } from './cards/2.status'
 import { TopNav } from './TopNav'
 import { WidgetCatalog } from './WidgetCatalog'
-import { WeatherCard } from './WeatherCard'
+import { WeatherCard } from './cards/1.weather'
 
 // recharts is heavy: keep it out of the main bundle.
 const EnergyCard = lazy(() =>
-  import('./EnergyCard').then((m) => ({ default: m.EnergyCard })),
+  import('./cards/8.energy').then((m) => ({ default: m.EnergyCard })),
 )
 
 const RENDERERS: WidgetRenderers = {
@@ -37,6 +39,7 @@ const RENDERERS: WidgetRenderers = {
     fixedHeight: true,
   },
   pills: { render: () => <QuickPills /> },
+  clock: { render: () => <ClockCard className="flex-1" /> },
 }
 
 export function Dashboard() {

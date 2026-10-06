@@ -1,8 +1,7 @@
 import { BatteryFull, Bot, House, MapPin, Play, Square } from 'lucide-react'
-import { useState } from 'react'
-import { useSmartHome } from '../hooks/smartHomeContext'
-import { RoundBtn, Section } from './ui'
-import { shows, TOUCH, type WidgetSize } from '../widgets/types'
+import { useSmartHome } from '../../hooks/smartHomeContext'
+import { RoundBtn, Section } from '../ui'
+import { shows, TOUCH, type WidgetSize } from '../../widgets/types'
 
 export function RobotVacuumCard({ size = 'm' }: { size?: WidgetSize }) {
   const { state, toggleVacuum, dockVacuum } = useSmartHome()
@@ -54,32 +53,5 @@ export function RobotVacuumCard({ size = 'm' }: { size?: WidgetSize }) {
         </div>
       )}
     </Section>
-  )
-}
-
-const PILLS = ['Music', 'Washer', 'Rooms', 'Devices', 'Sensors', 'Appliances']
-
-export function QuickPills() {
-  const [active, setActive] = useState('Devices')
-
-  return (
-    <div className="grid grid-cols-[repeat(auto-fill,minmax(96px,1fr))] content-start gap-1.5">
-      {PILLS.map((pill) => {
-        const on = pill === active
-        return (
-          <button
-            key={pill}
-            type="button"
-            aria-pressed={on}
-            onClick={() => setActive(pill)}
-            className={`press h-12 rounded-full px-2 text-[14px] font-medium leading-tight ${
-              on ? 'glass glass-teal text-fg' : 'glass text-fg-dim hover:text-fg'
-            }`}
-          >
-            {pill}
-          </button>
-        )
-      })}
-    </div>
   )
 }

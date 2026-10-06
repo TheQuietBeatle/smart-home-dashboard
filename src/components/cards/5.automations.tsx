@@ -7,10 +7,10 @@ import {
   Sun,
   UtensilsCrossed,
 } from 'lucide-react'
-import { useSmartHome } from '../hooks/smartHomeContext'
-import { PHONE_BATTERY } from '../data/mockData'
-import { Section } from './ui'
-import { shows, TOUCH, type WidgetSize } from '../widgets/types'
+import { useSmartHome } from '../../hooks/smartHomeContext'
+import { PHONE_BATTERY } from '../../data/mockData'
+import { Section } from '../ui'
+import { shows, TOUCH, type WidgetSize } from '../../widgets/types'
 
 const ICONS = {
   away: Briefcase,

@@ -51,7 +51,8 @@ npm run lint      # oxlint
 
 ```
 src/
-  components/   UI components (cards, panels, nav) — owned by the frontend workstream
+  components/   UI components (nav, status bar, shared ui) — owned by the frontend workstream
+    cards/      dashboard widget cards and panels
   hass/         Home Assistant integration (config, client, bridge) — mock-safe
   hooks/        context provider + state store with localStorage persistence
   data/         mock smart-home data
