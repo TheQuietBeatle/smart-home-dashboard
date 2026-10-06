@@ -1,71 +1,54 @@
 import {
+  Briefcase,
   Clapperboard,
-  House,
-  LogOut,
-  Moon,
-  Sparkles,
-  Utensils,
-  type LucideIcon,
+  MoonStar,
+  Settings,
+  Smartphone,
+  Sun,
+  UtensilsCrossed,
 } from 'lucide-react'
 import { useSmartHome } from '../hooks/smartHomeContext'
-import type { Automation } from '../types'
-import { Card, CardHeader } from './ui'
+import { PHONE_BATTERY } from '../data/mockData'
+import { Chip, Section } from './ui'
 
-const ICONS: Record<Automation['icon'], LucideIcon> = {
-  home: House,
-  moon: Moon,
-  away: LogOut,
-  dinner: Utensils,
+const ICONS = {
+  away: Briefcase,
+  moon: MoonStar,
+  home: Sun,
+  dinner: UtensilsCrossed,
   movie: Clapperboard,
-  sleep: Sparkles,
+  sleep: MoonStar,
 }
 
 export function AutomationPanel() {
   const { state, runScene } = useSmartHome()
 
   return (
-    <Card className="flex min-h-0 flex-col">
-      <CardHeader
-        title="Automazioni"
-        action={
-          <span className="text-[10px] text-ink-500">
-            {state.activeScene
-              ? state.automations.find((a) => a.id === state.activeScene)?.label
-              : '—'}
-          </span>
-        }
-      />
-      <div className="flex min-h-0 flex-1 items-center justify-between gap-1 px-3 pb-2.5">
-        {state.automations.map((auto) => {
-          const Icon = ICONS[auto.icon]
-          const active = auto.id === state.activeScene
+    <Section
+      icon={<Settings size={16} />}
+      title="Automations"
+      thumb={0.3}
+      chips={<Chip icon={<Smartphone size={12} />}>{PHONE_BATTERY}%</Chip>}
+    >
+      <div className="grid grid-cols-5 gap-2">
+        {state.automations.map((a) => {
+          const Icon = ICONS[a.icon]
           return (
             <button
-              key={auto.id}
+              key={a.id}
               type="button"
-              onClick={() => runScene(auto.id)}
-              className="press flex flex-1 flex-col items-center gap-1.5"
+              aria-label={a.label}
+              aria-pressed={a.active}
+              onClick={() => runScene(a.id)}
+              className={`press grid h-10 place-items-center rounded-xl ${
+                a.active ? 'bg-teal text-fg' : 'bg-tile text-fg hover:bg-tile-hi'
+              }`}
             >
-              <span
-                className={`grid h-10 w-10 place-items-center rounded-full border transition-all duration-200 ${
-                  active
-                    ? 'border-accent-cyan/45 bg-accent-cyan/12 text-accent-cyan glow-cyan'
-                    : 'border-line bg-white/[0.03] text-ink-400 hover:border-accent-cyan/25 hover:text-ink-200'
-                }`}
-              >
-                <Icon size={16} />
-              </span>
-              <span
-                className={`text-[9px] font-semibold uppercase tracking-wider ${
-                  active ? 'text-accent-cyan' : 'text-ink-500'
-                }`}
-              >
-                {auto.label}
-              </span>
+              <Icon size={16} />
             </button>
           )
         })}
       </div>
-    </Card>
+    </Section>
   )
 }

@@ -22,6 +22,8 @@ export interface SmartHomeContextValue {
   cycleFan: () => void
   setSource: (source: MediaState['source']) => void
   togglePlay: () => void
+  toggleEcho: () => void
+  toggleStatus: (id: string) => void
   next: () => void
   previous: () => void
   setVolume: (v: number) => void

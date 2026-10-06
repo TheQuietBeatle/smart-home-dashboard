@@ -94,7 +94,10 @@ export function setMediaSource(
   state: SmartHomeState,
   source: MediaState['source'],
 ): SmartHomeState {
-  return { ...state, media: { ...state.media, source, playing: true } }
+  return {
+    ...state,
+    media: { ...state.media, source, tvOn: source === 'tv' },
+  }
 }
 
 export function playMedia(state: SmartHomeState): SmartHomeState {
@@ -103,6 +106,25 @@ export function playMedia(state: SmartHomeState): SmartHomeState {
 
 export function pauseMedia(state: SmartHomeState): SmartHomeState {
   return { ...state, media: { ...state.media, playing: false } }
+}
+
+export function toggleEcho(state: SmartHomeState): SmartHomeState {
+  return {
+    ...state,
+    media: { ...state.media, echoPlaying: !state.media.echoPlaying },
+  }
+}
+
+export function toggleStatusCard(
+  state: SmartHomeState,
+  id: string,
+): SmartHomeState {
+  return {
+    ...state,
+    statusCards: state.statusCards.map((c) =>
+      c.id === id ? { ...c, active: !c.active } : c,
+    ),
+  }
 }
 
 export function togglePlay(state: SmartHomeState): SmartHomeState {
@@ -171,15 +193,15 @@ export function toggleVacuum(state: SmartHomeState): SmartHomeState {
   return {
     ...state,
     vacuum: cleaning
-      ? { docked: false, battery: state.vacuum.battery, status: 'In pulizia' }
-      : { docked: true, battery: state.vacuum.battery, status: 'Alla base' },
+      ? { docked: false, battery: state.vacuum.battery, status: 'Cleaning' }
+      : { docked: true, battery: state.vacuum.battery, status: 'Docked' },
   }
 }
 
 export function returnVacuumToBase(state: SmartHomeState): SmartHomeState {
   return {
     ...state,
-    vacuum: { ...state.vacuum, docked: true, status: 'Alla base' },
+    vacuum: { ...state.vacuum, docked: true, status: 'Docked' },
   }
 }
 
@@ -223,7 +245,7 @@ const SCENE_EFFECTS: Record<
       'cover.blinds': false,
     },
     climate: { ...s.climate, power: true, targetTemp: 18, mode: 'heat' },
-    media: { ...s.media, tvOn: false, playing: false, source: 'spotify' },
+    media: { ...s.media, tvOn: false, playing: false, source: 'pc' },
   }),
   away: (s) => ({
     ...s,
@@ -232,7 +254,7 @@ const SCENE_EFFECTS: Record<
     ) as SmartHomeState['lights'],
     climate: { ...s.climate, power: false },
     media: { ...s.media, tvOn: false, playing: false },
-    vacuum: { ...s.vacuum, docked: false, status: 'In pulizia' },
+    vacuum: { ...s.vacuum, docked: false, status: 'Cleaning' },
   }),
   dinner: (s) => ({
     ...s,
@@ -250,7 +272,7 @@ const SCENE_EFFECTS: Record<
       'cover.blinds': true,
     },
     climate: { ...s.climate, power: true, targetTemp: 21 },
-    media: { ...s.media, tvOn: false, playing: true, source: 'spotify' },
+    media: { ...s.media, tvOn: false, playing: true, source: 'pc' },
   }),
   movie: (s) => ({
     ...s,
@@ -284,7 +306,7 @@ const SCENE_EFFECTS: Record<
     ) as SmartHomeState['lights'],
     climate: { ...s.climate, power: true, targetTemp: 17, mode: 'auto', fan: 'low' },
     media: { ...s.media, tvOn: false, playing: false },
-    vacuum: { ...s.vacuum, docked: true, status: 'Alla base' },
+    vacuum: { ...s.vacuum, docked: true, status: 'Docked' },
   }),
 }
 

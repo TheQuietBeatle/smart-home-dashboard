@@ -33,6 +33,25 @@
     sans-serif;
 
   --radius-card: 1rem;
+
+  /* Hallmark · studied-DNA (HA wall tablet): flat slate tiles, one teal, one amber */
+  --color-bg: #12161d;
+  --color-bar: #1a1f29;
+  --color-tile: #262c38;
+  --color-tile-hi: #2f3646;
+  --color-rail: #2c3342;
+  --color-fg: #eceff4;
+  --color-fg-dim: #98a2b3;
+  --color-teal: #268b97;
+  --color-teal-deep: #1d6a74;
+  --color-amber: #e8a317;
+  --color-blue: #1c8cf4;
+  --color-blue-deep: #1568b8;
+  --color-green: #1fbf7a;
+  --color-steel: #2f6fa8;
+  --color-sky: #8fd3ee;
+  --color-cold: #4a90d9;
+  --font-ui: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
 @layer base {
@@ -44,12 +63,9 @@
 
   body {
     margin: 0;
-    background:
-      radial-gradient(1200px 600px at 15% -10%, #12213a 0%, transparent 60%),
-      radial-gradient(900px 500px at 100% 0%, #0d1a30 0%, transparent 55%),
-      #0b1220;
-    color: var(--color-ink-100);
-    font-family: var(--font-sans);
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-ui);
     -webkit-font-smoothing: antialiased;
     overflow: hidden;
     overscroll-behavior: none;
@@ -160,4 +176,18 @@
 
 .animate-live {
   animation: soft-pulse 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .press,
+  .animate-live,
+  .animate-flash {
+    transition: none;
+    animation: none;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-sky);
+  outline-offset: 2px;
 }

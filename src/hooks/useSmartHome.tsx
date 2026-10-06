@@ -14,7 +14,7 @@ import {
   type SmartHomeContextValue,
 } from './smartHomeContext'
 
-const STORAGE_KEY = 'casa-dashboard-state-v1'
+const STORAGE_KEY = 'casa-dashboard-state-v3'
 
 function loadInitial(): SmartHomeState {
   if (typeof window === 'undefined') return INITIAL_STATE
@@ -26,7 +26,7 @@ function loadInitial(): SmartHomeState {
       ...INITIAL_STATE,
       ...saved,
       weather: INITIAL_STATE.weather,
-      statusCards: INITIAL_STATE.statusCards,
+      statusCards: saved.statusCards ?? INITIAL_STATE.statusCards,
       lights: { ...INITIAL_STATE.lights, ...saved.lights },
       climate: { ...INITIAL_STATE.climate, ...saved.climate },
       media: { ...INITIAL_STATE.media, ...saved.media },
@@ -98,6 +98,8 @@ export function SmartHomeProvider({ children }: { children: ReactNode }) {
       cycleFan: () => set((s) => service.cycleFanSpeed(s)),
       setSource: (src) => set((s) => service.setMediaSource(s, src)),
       togglePlay: () => set((s) => service.togglePlay(s)),
+      toggleEcho: () => set((s) => service.toggleEcho(s)),
+      toggleStatus: (id) => set((s) => service.toggleStatusCard(s, id)),
       next: () => set((s) => service.nextTrack(s)),
       previous: () => set((s) => service.previousTrack(s)),
       setVolume: (v) => set((s) => service.setVolume(s, v)),
