@@ -41,7 +41,7 @@ export function AutomationPanel() {
               aria-pressed={a.active}
               onClick={() => runScene(a.id)}
               className={`press grid h-10 short:h-9 place-items-center rounded-xl ${
-                a.active ? 'bg-teal text-fg' : 'bg-tile text-fg hover:bg-tile-hi'
+                a.active ? 'glass glass-teal text-fg' : 'glass text-fg'
               }`}
             >
               <Icon size={16} />

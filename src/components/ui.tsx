@@ -62,11 +62,11 @@ export function IconButton({
 type Tone = 'teal' | 'amber' | 'blue' | 'green' | 'steel'
 
 const TONE_ON: Record<Tone, string> = {
-  teal: 'bg-teal text-fg',
-  amber: 'bg-amber text-bg',
-  blue: 'bg-blue text-fg',
-  green: 'bg-green text-bg',
-  steel: 'bg-steel text-fg',
+  teal: 'glass glass-teal text-fg',
+  amber: 'glass glass-amber text-bg',
+  blue: 'glass glass-blue text-fg',
+  green: 'glass glass-green text-bg',
+  steel: 'glass glass-steel text-fg',
 }
 
 interface PillProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -90,7 +90,7 @@ export function Pill({
       type="button"
       aria-pressed={active}
       className={`press flex h-9 min-w-0 items-center gap-2 rounded-full short:h-8 px-1.5 pr-3 text-left text-[13px] font-medium ${
-        active ? TONE_ON[tone] : 'bg-tile text-fg hover:bg-tile-hi'
+        active ? TONE_ON[tone] : 'glass text-fg'
       } ${className}`}
       {...rest}
     >
@@ -137,7 +137,7 @@ export function Chip({
   return (
     <span
       className={`flex h-6 shrink-0 items-center gap-1 rounded-md px-1.5 text-[11px] font-medium ${
-        tone === 'amber' ? 'bg-amber text-bg' : 'bg-tile text-fg'
+        tone === 'amber' ? 'glass glass-amber text-bg' : 'glass text-fg'
       }`}
     >
       {icon}
@@ -194,7 +194,7 @@ export function RoundBtn({
     <button
       type="button"
       className={`press grid h-9 w-9 shrink-0 place-items-center rounded-full short:h-8 short:w-8 ${
-        active ? TONE_ON[tone] : 'bg-tile text-fg hover:bg-tile-hi'
+        active ? TONE_ON[tone] : 'glass text-fg'
       } ${className}`}
       {...rest}
     >

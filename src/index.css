@@ -54,6 +54,7 @@
   --color-steel: #2f6fa8;
   --color-sky: #8fd3ee;
   --color-cold: #4a90d9;
+  --color-violet: #6d4fd6;
   --breakpoint-lg: 56rem;
   --font-ui: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
@@ -67,7 +68,15 @@
 
   body {
     margin: 0;
-    background: var(--color-bg);
+    /* Content layer: colour for the glass to refract (flat or black backdrops
+       make glass read as a plain tinted rectangle). */
+    background:
+      radial-gradient(60rem 40rem at 8% 12%, color-mix(in srgb, var(--color-teal) 55%, transparent), transparent 62%),
+      radial-gradient(52rem 38rem at 92% 8%, color-mix(in srgb, var(--color-blue) 45%, transparent), transparent 60%),
+      radial-gradient(48rem 36rem at 70% 96%, color-mix(in srgb, var(--color-violet) 50%, transparent), transparent 62%),
+      radial-gradient(40rem 30rem at 18% 92%, color-mix(in srgb, var(--color-amber) 28%, transparent), transparent 60%),
+      var(--color-bg);
+    background-attachment: fixed;
     color: var(--color-fg);
     font-family: var(--font-ui);
     -webkit-font-smoothing: antialiased;
@@ -205,6 +214,76 @@
 
 .ha-indicator[data-status='error'] {
   background: #f87171;
+}
+
+/* Liquid Glass material (web): translucent, blurred, saturated, with a specular
+   top edge. Functional layer only: controls and chrome, never content, never nested. */
+@layer components {
+  .glass {
+    --tint: var(--color-fg);
+    --a1: 15%;
+    --a2: 5%;
+    position: relative;
+    isolation: isolate;
+    background: linear-gradient(
+      150deg,
+      color-mix(in srgb, var(--tint) var(--a1), transparent),
+      color-mix(in srgb, var(--tint) var(--a2), transparent)
+    );
+    -webkit-backdrop-filter: blur(22px) saturate(1.8);
+    backdrop-filter: blur(22px) saturate(1.8);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.4),
+      inset 0 -1px 0 rgb(0 0 0 / 0.2),
+      inset 0 0 0 1px rgb(255 255 255 / 0.1),
+      0 10px 22px -12px rgb(0 0 0 / 0.65);
+  }
+
+  .glass::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(
+      120% 90% at 16% 0%,
+      rgb(255 255 255 / 0.24),
+      transparent 55%
+    );
+  }
+
+  button.glass:hover {
+    --a1: 22%;
+    --a2: 9%;
+  }
+
+  .glass-teal { --tint: var(--color-teal); --a1: 88%; --a2: 60%; }
+  .glass-amber { --tint: var(--color-amber); --a1: 92%; --a2: 72%; }
+  .glass-blue { --tint: var(--color-blue); --a1: 90%; --a2: 62%; }
+  .glass-green { --tint: var(--color-green); --a1: 90%; --a2: 66%; }
+  .glass-steel { --tint: var(--color-steel); --a1: 90%; --a2: 62%; }
+  button.glass-teal:hover, button.glass-amber:hover, button.glass-blue:hover,
+  button.glass-green:hover, button.glass-steel:hover { filter: brightness(1.1); }
+  .glass-bar { --a1: 10%; --a2: 4%; border-radius: 0; }
+}
+
+/* The system-style fallback: no blur support, Reduce Transparency, or Increase
+   Contrast get a solid, bordered surface and keep the tint. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass { background: color-mix(in srgb, var(--tint) 100%, var(--color-bg) 0%); }
+  .glass:not([class*='glass-']) { background: var(--color-tile); }
+}
+
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .glass {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.35);
+  }
+  .glass::after { display: none; }
+  .glass:not([class*='glass-']) { background: var(--color-tile); }
+  .glass[class*='glass-'] { --a1: 100%; --a2: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
