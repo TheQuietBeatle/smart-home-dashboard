@@ -1,13 +1,13 @@
 import {
   Activity,
-  Cloud,
-  Cpu,
-  Home,
-  MessageSquare,
-  Moon,
+  Droplets,
+  House,
+  Lightbulb,
+  Thermometer,
   Wifi,
 } from 'lucide-react'
 import { useSmartHome } from '../hooks/smartHomeContext'
+import { num } from '../lib/format'
 
 export function StatusBar() {
   const { state } = useSmartHome()
@@ -17,64 +17,58 @@ export function StatusBar() {
   ).length
 
   return (
-    <footer className="flex h-8 shrink-0 items-center gap-3 border-t border-line bg-[#0a111e] px-3 text-[9.5px] text-ink-500">
+    <footer className="glass glass-bar flex h-8 shrink-0 items-center gap-3 px-3 text-[11px] text-fg-dim">
       <span className="flex items-center gap-1.5">
-        <span className="h-1.5 w-1.5 rounded-full bg-accent-green animate-live" />
-        <Wifi size={11} className="text-accent-teal" />
-        <b className="font-semibold text-ink-300">Online</b>
+        <span className="h-1.5 w-1.5 rounded-full bg-green animate-live" />
+        <Wifi size={12} className="text-teal" />
+        <b className="font-medium text-fg">Online</b>
       </span>
 
-      <span className="h-3 w-px bg-line" />
+      <Divider />
 
       <span className="flex items-center gap-1.5">
-        <Home size={11} className="text-accent-cyan" />
-        Scena attiva:
-        <b className="font-semibold text-ink-200">{activeScene?.label ?? '—'}</b>
+        <House size={12} />
+        Scene
+        <b className="font-medium text-fg">{activeScene?.label ?? '—'}</b>
       </span>
 
-      <span className="h-3 w-px bg-line" />
+      <Divider />
 
       <span className="flex items-center gap-1.5">
-        <LightIcon />
-        <b className="font-semibold text-ink-200 tabular-nums">{lightsOn}</b>
-        luci accese
+        <Lightbulb size={12} className="text-amber" />
+        <b className="font-medium tabular-nums text-fg">{lightsOn}</b>
+        {lightsOn === 1 ? 'light on' : 'lights on'}
       </span>
 
-      <span className="h-3 w-px bg-line" />
+      <Divider />
 
       <span className="flex items-center gap-1.5">
-        <Activity size={11} className="text-accent-teal" />
-        Energia
-        <b className="font-semibold text-ink-200 tabular-nums">
-          {state.sensors.energy.toFixed(1)} kW
+        <Activity size={12} className="text-teal" />
+        Energy
+        <b className="font-medium tabular-nums text-fg">
+          {num(state.sensors.energy)} kW
         </b>
       </span>
 
       <span className="ml-auto flex items-center gap-3">
         <span className="flex items-center gap-1.5">
-          <Cloud size={11} />
-          {state.sensors.outdoorHumidity}%
+          <Thermometer size={12} />
+          Indoor
+          <b className="font-medium tabular-nums text-fg">
+            {num(state.sensors.indoorTemp)} °C
+          </b>
         </span>
         <span className="flex items-center gap-1.5">
-          <Moon size={11} className="text-accent-blue" />
-          {state.sensors.indoorTemp.toFixed(1)}°C interna
-        </span>
-        <span className="flex items-center gap-1.5">
-          <Cpu size={11} />
-          <b className="font-semibold text-ink-300">Casa v1.0</b>
-        </span>
-        <span className="grid h-5 w-5 place-items-center rounded-md border border-line bg-white/[0.03]">
-          <MessageSquare size={10} />
+          <Droplets size={12} />
+          <b className="font-medium tabular-nums text-fg">
+            {state.sensors.indoorHumidity}%
+          </b>
         </span>
       </span>
     </footer>
   )
 }
 
-function LightIcon() {
-  return (
-    <span className="grid h-3 w-3 place-items-center rounded-[3px] bg-accent-amber/20 text-[7px] text-accent-amber">
-      ●
-    </span>
-  )
+function Divider() {
+  return <span aria-hidden className="h-3 w-px bg-white/15" />
 }

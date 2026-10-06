@@ -19,6 +19,8 @@ interface WidgetFrameProps {
   size: WidgetSize
   arrangeOn: boolean
   fixedHeight?: boolean
+  /** Explicit position on a page (paged mode); otherwise the grid flows. */
+  placement?: { col: number; row: number; rows: number }
   isFirst: boolean
   isLast: boolean
   onMove: (dir: 'left' | 'right') => void
@@ -35,6 +37,7 @@ export function WidgetFrame({
   size,
   arrangeOn,
   fixedHeight = false,
+  placement,
   isFirst,
   isLast,
   onMove,
@@ -72,9 +75,24 @@ export function WidgetFrame({
   return (
     <div
       data-widget-id={id}
-      style={{ '--cols': span.cols, '--rows': span.rows } as CSSProperties}
-      className={`relative col-span-12 flex min-w-0 flex-col md:col-span-6 lg:[grid-column:span_var(--cols)] lg:[grid-row:span_var(--rows)] ${
-        fixedHeight ? 'min-h-0 overflow-hidden' : ''
+      style={
+        placement
+          ? {
+              gridColumn: `${placement.col} / span ${span.cols}`,
+              gridRow: `${placement.row} / span ${placement.rows}`,
+            }
+          : ({ '--cols': span.cols, '--rows': span.rows } as CSSProperties)
+      }
+      className={`relative flex min-w-0 flex-col ${
+        placement
+          ? 'min-h-0'
+          : 'col-span-12 md:col-span-6 lg:[grid-column:span_var(--cols)] lg:[grid-row:span_var(--rows)]'
+      } ${
+        fixedHeight
+          ? 'min-h-0 overflow-hidden'
+          : placement
+            ? 'scroll-thin overflow-y-auto overflow-x-hidden'
+            : ''
       } ${
         arrangeOn
           ? 'rounded-2xl outline-2 outline-offset-2 outline-dashed outline-sky/60'

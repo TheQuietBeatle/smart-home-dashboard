@@ -55,16 +55,18 @@ export const WIDGET_LABEL: Record<WidgetId, string> = {
   pills: 'Quick filters',
 }
 
+// Ordered so the first page holds the four main panels side by side and the
+// second page the smaller controls.
 export const DEFAULT_LAYOUT: readonly WidgetLayout[] = [
-  { id: 'weather', size: 'm' },
-  { id: 'status', size: 'm' },
+  { id: 'weather', size: 'l' },
+  { id: 'status', size: 'l' },
   { id: 'climate', size: 'l' },
+  { id: 'lighting', size: 'l' },
+  { id: 'media', size: 'w' },
+  { id: 'automations', size: 'w' },
   { id: 'roomba', size: 'm' },
   { id: 'energy', size: 'm' },
-  { id: 'automations', size: 'w' },
   { id: 'pills', size: 's' },
-  { id: 'lighting', size: 'w' },
-  { id: 'media', size: 'w' },
 ]
 
 /**

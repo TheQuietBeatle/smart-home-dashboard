@@ -13,13 +13,13 @@ const ICONS = {
 
 export function StatusCards({
   className = '',
-  size = 'm',
+  size = 'l',
 }: {
   className?: string
   size?: WidgetSize
 }) {
   const { state, toggleStatus } = useSmartHome()
-  const show = (tier: WidgetSize) => shows(size, tier, 'm')
+  const show = (tier: WidgetSize) => shows(size, tier, 'l')
   const of = (kind: StatusCard['kind']) =>
     state.statusCards.filter((c) => c.kind === kind)
 

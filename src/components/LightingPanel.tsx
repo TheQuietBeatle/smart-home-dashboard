@@ -41,12 +41,12 @@ const ICONS: Partial<Record<DeviceId, typeof Bed>> = {
 
 export function LightingPanel({
   className = '',
-  size = 'w',
+  size = 'l',
 }: {
   className?: string
   size?: WidgetSize
 }) {
-  const show = (tier: WidgetSize) => shows(size, tier, 'w')
+  const show = (tier: WidgetSize) => shows(size, tier, 'l')
   const { state, toggleLight, setBlinds } = useSmartHome()
   const open = state.lights['cover.blinds']
 

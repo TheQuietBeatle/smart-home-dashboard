@@ -7,12 +7,12 @@ import { shows, type WidgetSize } from '../widgets/types'
 
 export function WeatherCard({
   className = '',
-  size = 'm',
+  size = 'l',
 }: {
   className?: string
   size?: WidgetSize
 }) {
-  const show = (tier: WidgetSize) => shows(size, tier, 'm')
+  const show = (tier: WidgetSize) => shows(size, tier, 'l')
   const { state } = useSmartHome()
   const clock = useClock()
   const { weather, sensors } = state
