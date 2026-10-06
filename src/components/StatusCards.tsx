@@ -45,7 +45,7 @@ export function StatusCards({ className = '' }: { className?: string }) {
               aria-pressed={c.active}
               onClick={() => toggleStatus(c.id)}
               className={`press flex h-11 short:h-10 min-w-0 items-center gap-2 rounded-full px-2 text-left ${
-                c.active ? 'bg-green text-bg' : 'bg-tile text-fg'
+                c.active ? 'glass glass-green text-bg' : 'glass text-fg'
               }`}
             >
               <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-black/20 max-[1100px]:hidden">

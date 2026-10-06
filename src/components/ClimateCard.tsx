@@ -103,7 +103,7 @@ export function ClimateCard({ className = '' }: { className?: string }) {
             type="button"
             aria-label="Lower temperature"
             onClick={() => setTemp(-0.5)}
-            className="press absolute bottom-3 left-2 grid h-7 w-7 place-items-center rounded-full bg-tile text-fg hover:bg-tile-hi"
+            className="press absolute bottom-3 left-2 grid h-7 w-7 place-items-center glass rounded-full text-fg"
           >
             <Minus size={14} />
           </button>
@@ -111,7 +111,7 @@ export function ClimateCard({ className = '' }: { className?: string }) {
             type="button"
             aria-label="Raise temperature"
             onClick={() => setTemp(0.5)}
-            className="press absolute bottom-3 right-2 grid h-7 w-7 place-items-center rounded-full bg-tile text-fg hover:bg-tile-hi"
+            className="press absolute bottom-3 right-2 grid h-7 w-7 place-items-center glass rounded-full text-fg"
           >
             <Plus size={14} />
           </button>
@@ -145,7 +145,7 @@ export function ClimateCard({ className = '' }: { className?: string }) {
           <div
             key={a.id}
             className={`flex h-10 short:h-9 min-w-0 items-center gap-2 rounded-full px-1.5 pr-3 ${
-              a.active ? 'bg-steel' : 'bg-tile'
+              a.active ? 'glass glass-steel' : 'glass'
             }`}
           >
             <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-black/20">

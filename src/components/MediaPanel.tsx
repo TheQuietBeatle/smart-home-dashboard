@@ -52,7 +52,7 @@ export function MediaPanel() {
         ))}
       </div>
 
-      <div className="flex h-11 short:h-10 items-center gap-1.5 rounded-full bg-tile px-1.5">
+      <div className="flex h-11 short:h-10 items-center gap-1.5 glass rounded-full px-1.5">
         <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-green text-bg">
           <Disc3 size={16} />
         </span>
@@ -62,13 +62,13 @@ export function MediaPanel() {
         <button type="button" aria-label="Shuffle" className="press grid h-8 w-8 place-items-center rounded-full text-fg-dim hover:text-fg">
           <Shuffle size={14} />
         </button>
-        <button type="button" aria-label="Previous" onClick={previous} className="press grid h-8 w-8 place-items-center rounded-full hover:bg-tile-hi">
+        <button type="button" aria-label="Previous" onClick={previous} className="press grid h-8 w-8 place-items-center rounded-full hover:bg-white/10">
           <SkipBack size={14} />
         </button>
-        <button type="button" aria-label={media.playing ? 'Pause' : 'Play'} onClick={togglePlay} className="press grid h-8 w-8 place-items-center rounded-full hover:bg-tile-hi">
+        <button type="button" aria-label={media.playing ? 'Pause' : 'Play'} onClick={togglePlay} className="press grid h-8 w-8 place-items-center rounded-full hover:bg-white/10">
           {media.playing ? <Pause size={15} /> : <Play size={15} />}
         </button>
-        <button type="button" aria-label="Next" onClick={next} className="press grid h-8 w-8 place-items-center rounded-full hover:bg-tile-hi">
+        <button type="button" aria-label="Next" onClick={next} className="press grid h-8 w-8 place-items-center rounded-full hover:bg-white/10">
           <SkipForward size={14} />
         </button>
         <button
@@ -81,7 +81,7 @@ export function MediaPanel() {
         </button>
       </div>
 
-      <div className="flex h-11 short:h-10 items-center gap-1.5 rounded-full bg-tile px-1.5">
+      <div className="flex h-11 short:h-10 items-center gap-1.5 glass rounded-full px-1.5">
         <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-[#e5484d] to-[#a3262b] text-fg">
           <Speaker size={15} />
         </span>

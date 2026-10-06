@@ -66,7 +66,7 @@ export function LightingPanel({ className = '' }: { className?: string }) {
               aria-pressed={on}
               onClick={() => toggleLight(id)}
               className={`press flex flex-col items-center justify-center gap-2 rounded-2xl text-[13px] font-medium ${
-                on ? 'bg-teal' : 'bg-tile hover:bg-tile-hi'
+                on ? 'glass glass-teal' : 'glass'
               }`}
             >
               <Icon size={22} strokeWidth={1.6} />
@@ -95,7 +95,7 @@ export function LightingPanel({ className = '' }: { className?: string }) {
 
       <div
         className={`flex h-11 short:h-10 items-center gap-2 rounded-full px-2 ${
-          open ? 'bg-blue text-fg' : 'bg-tile text-fg'
+          open ? 'glass glass-blue text-fg' : 'glass text-fg'
         }`}
       >
         <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-black/20">
